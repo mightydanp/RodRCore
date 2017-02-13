@@ -191,11 +191,11 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		if (!this.worldObj.isRemote) {
 
 			// ****boolean flag2 = this.burnTime == 0;
-			if (this.burnTime != 0 || this.slots[1] != null && this.slots[0] != null) {
+			if (this.burnTime != 0 || this.slots[1] != null && this.slots[0] != null && burning != false) {
 				if (this.burnTime == 0 && burning(worldObj, xCoord, yCoord, zCoord, false)) {
 					this.currentItemBurnTime = this.burnTime = getItemBurnTime(this.slots[1]);
 
-					if (this.burnTime > 0 && burning == true) {
+					if (this.burnTime > 0) {
 						flag1 = true;
 
 						if (this.slots[1] != null) {
@@ -208,7 +208,7 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 					}
 				}
 
-				if (this.isBurning() && this.canSmelt() && burning == true) {
+				if (this.isBurning() && this.canSmelt()) {
 					this.cookTime++;
 
 					if (this.cookTime == 200) {
@@ -239,9 +239,9 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 			return false;
 		} else {
 			ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
-			if (itemStack == null)
+			if (itemStack == null && burning == false)
 				return false;
-			if (this.slots[0] == null)
+			if (this.slots[0] == null && burning == false)
 				return true;
 			if (this.slots[2] == null)
 				return true;
@@ -253,7 +253,7 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 	}
 
 	private void smeltItem() {
-		if (this.canSmelt()) {
+		if (this.canSmelt() && burning == true) {
 			ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
 
 			if (this.slots[2] == null) {
