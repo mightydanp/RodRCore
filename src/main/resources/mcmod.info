@@ -1,0 +1,16 @@
+[
+{
+  "modid": "rodRCor",
+  "name": "RodRubber Core",
+  "description": "Nothing to see here ;).",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["MightyDanp"],
+  "credits": "Mightydanp",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

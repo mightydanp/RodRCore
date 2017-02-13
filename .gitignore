@@ -45,3 +45,30 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+.gradle/*
+.nb-gradle/*
+.settings/*
+asm/*
+bin/*
+build/*
+config/*
+crash-reports/*
+gradle/*
+logs/*
+mods/*
+resourcepacks/*
+run/*
+saves/*
+screenshots/*
+eclipse/*
+.classpath
+.gitattributes
+.gitignore
+.project
+EssenceofTech_Client.launch
+EssenceofTech_Server.launch
+hs_err_pid432
+options.txt
+usercache.json
+usernamecache.json

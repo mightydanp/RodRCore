@@ -1,0 +1,8 @@
+CraftingTweaks
+CraftTweaker
+Gregtech
+NEI
+IC2
+Iguana Tweaks
+Tinkers Construct
+

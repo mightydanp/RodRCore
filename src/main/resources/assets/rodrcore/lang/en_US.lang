@@ -1,0 +1,10 @@
+tile.twigs.name=Twigs
+tile.rocks.name=Rocks
+tile.ore_sand_tin.name=Tin Sand
+tile.ore_sand_copper.name=Copper Sand
+
+item.twigs_i.name=Twigs
+item.rocks_i.name=Rocks
+item.rock.name=Rock
+
+itemGroup.rodrcore=RodRubber
