@@ -181,8 +181,7 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 	@Override
 	public void updateEntity() {
-		boolean flag = this.burnTime > 0;
-		boolean flag1 = false;
+		boolean flag = false;
 
 		if (this.burnTime > 0) {
 			this.burnTime--;
@@ -191,12 +190,12 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		if (!this.worldObj.isRemote) {
 
 			// ****boolean flag2 = this.burnTime == 0;
-			if (this.burnTime != 0 || this.slots[1] != null && this.slots[0] != null && burning != false) {
+			if (this.burnTime != 0 || this.slots[1] != null) {
 				if (this.burnTime == 0 && burning(worldObj, xCoord, yCoord, zCoord, false)) {
 					this.currentItemBurnTime = this.burnTime = getItemBurnTime(this.slots[1]);
 
 					if (this.burnTime > 0) {
-						flag1 = true;
+						flag = true;
 
 						if (this.slots[1] != null) {
 							this.slots[1].stackSize--;
@@ -206,15 +205,17 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 							}
 						}
 					}
+				}else if(!burning(worldObj, xCoord, yCoord, zCoord, true) || !isBurning()){
+					this.currentItemBurnTime = this.burnTime = 0;
 				}
 
-				if (this.isBurning() && this.canSmelt()) {
+				if (this.isBurning() && this.canSmelt() && burning(worldObj, xCoord, yCoord, zCoord, true)) {
 					this.cookTime++;
 
 					if (this.cookTime == 200) {
 						this.cookTime = 0;
 						this.smeltItem();
-						flag1 = true;
+						flag = true;
 					}
 				} else {
 					this.cookTime = 0;
@@ -222,14 +223,14 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 				}
 			}
 			// ****
-			if (flag != this.burnTime > 0 || getItemBurnTime(this.slots[1]) > 0 && burning == true) {
+			if (this.burnTime > 0 || getItemBurnTime(this.slots[1]) > 0 && burning != false) {
 
-				flag1 = true;
+				flag = true;
 				BlockCampFire.updateCampFireBlockState(this.burnTime > 0, this.worldObj, this.xCoord, this.yCoord,
 						this.zCoord);
 			}
 		}
-		if (flag1) {
+		if (flag) {
 			this.markDirty();
 		}
 	}
