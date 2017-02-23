@@ -11,12 +11,18 @@ import com.mightydanp.rodrcore.api.common.block.CBlock;
 import com.mightydanp.rodrcore.common.RodRCore;
 import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.lib.Reference;
+import com.mightydanp.rodrcore.common.tileentity.TileEntityRocks;
+import com.mightydanp.rodrcore.common.tileentity.TileEntityTwigs;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBush;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,19 +31,22 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
-public class BlockTwigs extends CBlock implements IShearable {
+public class BlockTwigs extends BlockBush implements ITileEntityProvider {
 
 	private Random random = new Random();
 
 	public BlockTwigs(String unlocalizedName) {
-		super(Material.plants, unlocalizedName);
+		super(Material.plants);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
+		this.setBlockName(unlocalizedName);
 		this.setBlockTextureName(Reference.MODID + ":" + unlocalizedName);
 		this.setHardness(0.5F);
+		this.setCreativeTab(RodRCore.tabRodRCore);
 		this.setStepSound(soundTypeGrass);
 	}
 
@@ -53,7 +62,7 @@ public class BlockTwigs extends CBlock implements IShearable {
 
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
-		return 0;
+		return -1;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -77,6 +86,10 @@ public class BlockTwigs extends CBlock implements IShearable {
 
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
+		if(!world.isRemote && player.getCurrentEquippedItem().getItem() == Items.shears){
+			EntityItem entityBlockRocks = new EntityItem(world, x, y, z, new ItemStack(ModBlocks.twigs, 1, 0));
+			world.spawnEntityInWorld(entityBlockRocks);
+		}
 		return;
 	}
 
@@ -89,16 +102,30 @@ public class BlockTwigs extends CBlock implements IShearable {
 			world.spawnEntityInWorld(entityItem);
 		}
 	}
-
+	
 	@Override
-	public boolean isShearable(ItemStack item, IBlockAccess world, int x, int y, int z) {
-		return true;
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase, ItemStack itemStack) {
+		int l = MathHelper.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+		if (l == 0) {
+			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
+		}
+
+		if (l == 1) {
+			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+		}
+
+		if (l == 2) {
+			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+		}
+
+		if (l == 3) {
+			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
+		}
 	}
-
+	
 	@Override
-	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, int x, int y, int z, int fortune) {
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-		ret.add(new ItemStack(ModItems.twigs, 1));
-		return ret;
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+		return new TileEntityTwigs();
 	}
 }

@@ -28,24 +28,44 @@ public class CampFireRecipes {
 	}
 
 	private CampFireRecipes() {
+        this.smeltBlock(Blocks.sand, new ItemStack(Blocks.glass), 0.1F);
+        this.smeltItem(Items.porkchop, new ItemStack(Items.cooked_porkchop), 0.35F);
+        this.smeltItem(Items.beef, new ItemStack(Items.cooked_beef), 0.35F);
+        this.smeltItem(Items.chicken, new ItemStack(Items.cooked_chicken), 0.35F);
+        this.smeltBlock(Blocks.cactus, new ItemStack(Items.dye, 1, 2), 0.2F);
+        this.smeltItem(Items.potato, new ItemStack(Items.baked_potato), 0.35F);
+		
+		ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
+		
+		int i = afishtype.length;
+
+        for (int j = 0; j < i; ++j)
+        {
+            ItemFishFood.FishType fishtype = afishtype[j];
+
+            if (fishtype.func_150973_i())
+            {
+                this.smeltItemStack(new ItemStack(Items.fish, 1, fishtype.func_150976_a()), new ItemStack(Items.cooked_fished, 1, fishtype.func_150976_a()), 0.35F);
+            }
+        }
 	}
 
-	public void campFireBlockSmelting(Block input,ItemStack output1, ItemStack output2, int precentOutput, float xpGained) {
-		//this.campFireItemStackSmelting(Item.getItemFromBlock(input), output1, output2, precentOutput, xpGained);
-	}
+    public void smeltBlock(Block block, ItemStack output, float xp)
+    {
+        this.smeltItem(Item.getItemFromBlock(block), output, xp);
+    }
 
-	public void campFireItemSmelting(Item item, ItemStack output1, ItemStack output2, int precentOutput, float xpGained) {
-		this.campFireItemStackSmelting(new ItemStack(item, 1, 32767), output1, output2, precentOutput, xpGained);
-	}
+    public void smeltItem(Item item, ItemStack output, float xp)
+    {
+        this.smeltItemStack(new ItemStack(item, 1, 32767), output, xp);
+    }
 
-	public void campFireItemStackSmelting(ItemStack input, ItemStack output1, ItemStack output2, int precentOutput, float xpGained) {
-		this.smeltingList.put(input, output1);
-		this.experienceList.put(output1, Float.valueOf(xpGained));
-	}
+    public void smeltItemStack(ItemStack input, ItemStack output, float xp)
+    {
+        this.smeltingList.put(input, output);
+        this.experienceList.put(output, Float.valueOf(xp));
+    }
 
-	/**
-	 * Returns the smelting result of an item.
-	 */
 	public ItemStack getSmeltingResult(ItemStack itemStack) {
 		Iterator iterator = this.smeltingList.entrySet().iterator();
 		Entry entry;
@@ -56,22 +76,21 @@ public class CampFireRecipes {
 			}
 
 			entry = (Entry) iterator.next();
-		} while (!this.campFireSmelting(itemStack, (ItemStack) entry.getKey()));
+		} while (!this.getResult(itemStack, (ItemStack) entry.getKey()));
 
 		return (ItemStack) entry.getValue();
 	}
 
-	private boolean campFireSmelting(ItemStack input, ItemStack output) {
-		return output.getItem() == input.getItem()
-				&& (output.getItemDamage() == 32767 || output.getItemDamage() == input.getItemDamage());
+	private boolean getResult(ItemStack input, ItemStack output) {
+		return output.getItem() == input.getItem() && (output.getItemDamage() == 32767 || output.getItemDamage() == input.getItemDamage());
 	}
 
 	public Map getSmeltingList() {
 		return this.smeltingList;
 	}
 
-	public float smelting(ItemStack itemStack) {
-		float ret = itemStack.getItem().getSmeltingExperience(itemStack);
+	public float func_151398_b(ItemStack p_151398_1_) {
+		float ret = p_151398_1_.getItem().getSmeltingExperience(p_151398_1_);
 		if (ret != -1)
 			return ret;
 
@@ -84,7 +103,7 @@ public class CampFireRecipes {
 			}
 
 			entry = (Entry) iterator.next();
-		} while (!this.campFireSmelting(itemStack, (ItemStack) entry.getKey()));
+		} while (!this.getResult(p_151398_1_, (ItemStack) entry.getKey()));
 
 		return ((Float) entry.getValue()).floatValue();
 	}

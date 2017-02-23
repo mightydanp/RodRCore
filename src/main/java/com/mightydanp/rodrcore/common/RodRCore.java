@@ -9,6 +9,8 @@ import com.mightydanp.rodrcore.common.handler.GuiHandler;
 import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.lib.*;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityCampFire;
+import com.mightydanp.rodrcore.common.tileentity.TileEntityRocks;
+import com.mightydanp.rodrcore.common.tileentity.TileEntityTwigs;
 import com.mightydanp.rodrcore.common.world.gen.WorldGen;
 import com.mightydanp.rodrcore.common.world.gen.feature.WorldGenTwigsAndRocks;
 
@@ -51,6 +53,8 @@ public class RodRCore {
         GuiHandler guiHandler = new GuiHandler();
 		GameRegistry.registerWorldGenerator(new WorldGen(), 0);
 		GameRegistry.registerTileEntity(TileEntityCampFire.class, EntityReference.CAMPFIRE_NAME);
+		GameRegistry.registerTileEntity(TileEntityTwigs.class, EntityReference.TWIGS_NAME);
+		GameRegistry.registerTileEntity(TileEntityRocks.class, EntityReference.ROCKS_NAME);
 		RodRCore.proxy.init(event);
     }
 

@@ -17,9 +17,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class ItemRock  extends CItem {
+public class MainItem  extends CItem {
 
-	public ItemRock(String unlocalizedName) {
+	public MainItem(String unlocalizedName) {
 		super(unlocalizedName);
 		this.setCreativeTab(RodRCore.tabRodRCore);
         this.setUnlocalizedName(unlocalizedName);

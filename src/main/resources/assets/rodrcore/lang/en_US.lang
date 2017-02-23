@@ -1,10 +1,11 @@
 tile.twigs.name=Twigs
 tile.rocks.name=Rocks
-tile.ore_sand_tin.name=Tin Sand
-tile.ore_sand_copper.name=Copper Sand
+tile.ore_sand_tin.name=Tin Ore
+tile.ore_sand_copper.name=Copper Ore
+tile.camp_fire_idle.name=Camp Fire
 
-item.twigs_i.name=Twigs
-item.rocks_i.name=Rocks
 item.rock.name=Rock
+
+container.camp_fire=Camp Fire
 
 itemGroup.rodrcore=RodRubber

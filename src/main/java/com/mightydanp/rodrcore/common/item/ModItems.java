@@ -16,15 +16,10 @@ import net.minecraftforge.common.util.EnumHelper;
  */
 public class ModItems extends CRegistryHandler {
 
-
 	public static Item					rock;
-	public static Item					twigs;
-	public static Item					rocks;
 
 	public static void preInit() {
-		registerObject(rock = new ItemRock(ItemReference.ROCK_NAME), ItemReference.ROCK_NAME, null);
-		registerObject(rocks = new ItemRocks(ItemReference.ROCKS_NAME), ItemReference.ROCKS_NAME, null);
-		registerObject(twigs = new ItemTwigs(ItemReference.TWIGS_NAME), ItemReference.TWIGS_NAME, null);
+		registerObject(rock = new MainItem(ItemReference.ROCK_NAME), ItemReference.ROCK_NAME, null);
 		}
 
 	public static void init() {

@@ -3,9 +3,11 @@ package com.mightydanp.rodrcore.common.tileentity;
 import java.util.List;
 
 import com.mightydanp.rodrcore.common.block.BlockCampFire;
+import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.item.crafting.CampFireRecipes;
 import com.mightydanp.rodrcore.common.lib.GuiReference;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +18,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -23,16 +26,17 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 	private String localizedName;
 
 	private static final int[] slots_top = new int[] { 0 };
-	private static final int[] slots_bottom = new int[] { 2, 3 };
+	private static final int[] slots_bottom = new int[] { 2 };
 	private static final int[] slots_sides = new int[] { 1 };
 
-	private ItemStack[] slots = new ItemStack[4];
+	private ItemStack[] slots = new ItemStack[3];
 
 	public int furnaceSpeed = 200;
 	public int burnTime;
 	public int currentItemBurnTime;
 	public int cookTime;
 	public boolean burning;
+	public boolean burnableItem;
 	// public int canStart = this.slots[1].stackSize = 0;
 
 	public String getInvName() {
@@ -146,6 +150,8 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 		this.burnTime = nbt.getShort("BurnTime");
 		this.cookTime = nbt.getShort("CookTime");
+		this.burning = nbt.getBoolean("Burning");
+		this.burnableItem = nbt.getBoolean("BurnableItem");
 		this.currentItemBurnTime = getItemBurnTime(this.slots[1]);
 
 		if (nbt.hasKey("CustomName", 8)) {
@@ -157,6 +163,8 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		super.writeToNBT(nbt);
 		nbt.setShort("BurnTime", (short) this.burnTime);
 		nbt.setShort("CookTime", (short) this.cookTime);
+		nbt.setBoolean("Burning", (boolean) this.burning);
+		nbt.setBoolean("BurnableItem", (boolean) this.burnableItem);
 		NBTTagList nbttaglist = new NBTTagList();
 
 		for (int i = 0; i < this.slots.length; ++i) {
@@ -181,7 +189,8 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 	@Override
 	public void updateEntity() {
-		boolean flag = false;
+		boolean flag = this.burnTime > 0;
+		boolean flag1 = false;
 
 		if (this.burnTime > 0) {
 			this.burnTime--;
@@ -189,13 +198,12 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 		if (!this.worldObj.isRemote) {
 
-			// ****boolean flag2 = this.burnTime == 0;
-			if (this.burnTime != 0 || this.slots[1] != null) {
+			if (this.burnTime != 0 || this.slots[1] != null && burning != false) {
 				if (this.burnTime == 0 && burning(worldObj, xCoord, yCoord, zCoord, false)) {
 					this.currentItemBurnTime = this.burnTime = getItemBurnTime(this.slots[1]);
 
 					if (this.burnTime > 0) {
-						flag = true;
+						flag1 = true;
 
 						if (this.slots[1] != null) {
 							this.slots[1].stackSize--;
@@ -205,17 +213,25 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 							}
 						}
 					}
-				}else if(!burning(worldObj, xCoord, yCoord, zCoord, true) || !isBurning()){
+				} else if (!burning(worldObj, xCoord, yCoord, zCoord, true)) {
 					this.currentItemBurnTime = this.burnTime = 0;
 				}
+				if (this.slots[1] == null) {
+					this.burning = false;
+				}
 
-				if (this.isBurning() && this.canSmelt() && burning(worldObj, xCoord, yCoord, zCoord, true)) {
-					this.cookTime++;
+				if (this.isBurning() && this.canSmelt() || this.slots[1] != null && burning == true) {
+					if (this.slots[0] == null) {
+						this.cookTime = 0;
+						flag1 = true;
+					} else
+						this.cookTime++;
 
 					if (this.cookTime == 200) {
 						this.cookTime = 0;
 						this.smeltItem();
-						flag = true;
+
+						flag1 = true;
 					}
 				} else {
 					this.cookTime = 0;
@@ -223,49 +239,44 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 				}
 			}
 			// ****
-			if (this.burnTime > 0 || getItemBurnTime(this.slots[1]) > 0 && burning != false) {
+			if (flag != this.burnTime > 0 || getItemBurnTime(this.slots[1]) > 0 && burning == true) {
 
-				flag = true;
+				flag1 = true;
 				BlockCampFire.updateCampFireBlockState(this.burnTime > 0, this.worldObj, this.xCoord, this.yCoord,
 						this.zCoord);
 			}
 		}
-		if (flag) {
+		if (flag1) {
 			this.markDirty();
 		}
 	}
 
 	private boolean canSmelt() {
-		if (this.slots[1] == null) {
+		if (this.slots[0] == null) {
 			return false;
 		} else {
-			ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
-			if (itemStack == null && burning == false)
+			ItemStack itemstack = CampFireRecipes.smelting().getSmeltingResult(this.slots[0]);
+			if (itemstack == null) {
+				this.cookTime = 0;
 				return false;
-			if (this.slots[0] == null && burning == false)
-				return true;
+			}
 			if (this.slots[2] == null)
 				return true;
-			if (this.slots[3] == null)
-				return true;
-			int result = this.slots[2].stackSize + itemStack.stackSize;
-			return (result <= getInventoryStackLimit() && result <= itemStack.getMaxStackSize());
+			if (!this.slots[2].isItemEqual(itemstack))
+				return false;
+			int result = slots[2].stackSize + itemstack.stackSize;
+			return result <= getInventoryStackLimit() && result <= this.slots[2].getMaxStackSize();
 		}
 	}
 
 	private void smeltItem() {
 		if (this.canSmelt() && burning == true) {
-			ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
+			ItemStack itemStack = CampFireRecipes.smelting().getSmeltingResult(this.slots[0]);
 
 			if (this.slots[2] == null) {
 				this.slots[2] = itemStack.copy();
 			} else if (this.slots[2].isItemEqual(itemStack)) {
 				this.slots[2].stackSize += itemStack.stackSize;
-			}
-			if (this.slots[3] == null) {
-				this.slots[3] = itemStack.copy();
-			} else if (this.slots[3].isItemEqual(itemStack)) {
-				this.slots[3].stackSize += itemStack.stackSize;
 			}
 
 			this.slots[0].stackSize--;
@@ -278,24 +289,24 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 	public static int getItemBurnTime(ItemStack itemStack) {
 		if (itemStack != null) {
+			int fuelVaul = (GameRegistry.getFuelValue(itemStack) > 0 ? GameRegistry.getFuelValue(itemStack)
+					: TileEntityFurnace.getItemBurnTime(itemStack));
 			if (itemStack.getItem() == OreDictionary.getOres("logWood", true)) {
 				return 200;
 			}
-			if (itemStack.getItem() == Items.stick) {
-				return 200;
-			}
+
+			return fuelVaul;
 		}
 		return 0;
-
 	}
 
-	public boolean isItemFuel(ItemStack itemStack) {
+	public static boolean isItemFuel(ItemStack itemStack) {
 		return getItemBurnTime(itemStack) > 0;
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-		if (slot == 2 || slot == 3) {
+		if (slot == 2) {
 			return false;
 		}
 		return slot == 1 ? isItemFuel(itemStack) : true;
@@ -317,7 +328,8 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 	}
 
 	public boolean burning(World world, int x, int y, int z, boolean lastArgNeeded) {
-		return (world.isRaining() || world.isThundering()) && world.canBlockSeeTheSky(x, y, z) && lastArgNeeded ? burning : true;
+		return (world.isRaining() || world.isThundering()) && world.canBlockSeeTheSky(x, y, z) && lastArgNeeded
+				? burning : true;
 	}
 
 	@SideOnly(Side.CLIENT)
