@@ -8,12 +8,14 @@ import com.mightydanp.rodrcore.common.block.ModBlocks;
 import com.mightydanp.rodrcore.common.handler.GuiHandler;
 import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.lib.*;
+import com.mightydanp.rodrcore.common.minetweaker.MineTweakerCompat;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityCampFire;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityRocks;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityTwigs;
 import com.mightydanp.rodrcore.common.world.gen.WorldGen;
 import com.mightydanp.rodrcore.common.world.gen.feature.WorldGenTwigsAndRocks;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -55,6 +57,10 @@ public class RodRCore {
 		GameRegistry.registerTileEntity(TileEntityCampFire.class, EntityReference.CAMPFIRE_NAME);
 		GameRegistry.registerTileEntity(TileEntityTwigs.class, EntityReference.TWIGS_NAME);
 		GameRegistry.registerTileEntity(TileEntityRocks.class, EntityReference.ROCKS_NAME);
+		if(Loader.isModLoaded("MineTweaker3"))
+		{
+			MineTweakerCompat.register();
+		}
 		RodRCore.proxy.init(event);
     }
 

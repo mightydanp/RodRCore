@@ -9,6 +9,7 @@ import com.mightydanp.rodrcore.common.lib.ItemReference;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 
 /**
@@ -16,10 +17,26 @@ import net.minecraftforge.common.util.EnumHelper;
  */
 public class ModItems extends CRegistryHandler {
 
+	public static Item                  ash;
+	public static Item                  unfiredClayPan;
+	public static Item                  clayPan;
+	public static Item                  pan;
+	public static Item                  unfiredClayPot;
+	public static Item                  clayPot;
+	public static Item                  pot;
+	public static Item                  smallCrucible;
 	public static Item					rock;
 
 	public static void preInit() {
-		registerObject(rock = new MainItem(ItemReference.ROCK_NAME), ItemReference.ROCK_NAME, null);
+		registerObject(ash = new CItem(ItemReference.ASH_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.ASH_NAME, null);
+		registerObject(unfiredClayPan = new CItem(ItemReference.UNFIREDCLAYPAN_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.UNFIREDCLAYPAN_NAME, null);
+		registerObject(clayPan = new ItemClayPan(ItemReference.CLAYPAN_NAME), ItemReference.CLAYPAN_NAME, null);
+		registerObject(pan = new ItemPan(ItemReference.PAN_NAME), ItemReference.PAN_NAME, null);
+		registerObject(unfiredClayPot = new CItem(ItemReference.UNFIREDCLAYPOT_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.UNFIREDCLAYPOT_NAME, null);
+		registerObject(clayPot = new ItemClayPot(ItemReference.CLAYPOT_NAME), ItemReference.CLAYPOT_NAME, null);
+		registerObject(pot = new ItemPot(ItemReference.POT_NAME), ItemReference.POT_NAME, null);
+		registerObject(smallCrucible = new CItem(ItemReference.SMALLCRUCIBLE_NAME).setCreativeTab(RodRCore.tabRodRCore).setMaxDamage(1).setMaxStackSize(1), ItemReference.SMALLCRUCIBLE_NAME, null);
+		registerObject(rock = new CItem(ItemReference.ROCK_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.ROCK_NAME, null);
 		}
 
 	public static void init() {
@@ -29,6 +46,7 @@ public class ModItems extends CRegistryHandler {
 	}
 
 	public static void registerOreDictionary() {
+		registerOreDictionary(ash, "dustAsh", 0);
 		registerOreDictionary(rock, ItemReference.ROCK_NAME, 0);
 		}
 

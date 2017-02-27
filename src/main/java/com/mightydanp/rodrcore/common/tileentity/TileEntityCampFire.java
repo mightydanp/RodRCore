@@ -1,10 +1,14 @@
 package com.mightydanp.rodrcore.common.tileentity;
 
 import java.util.List;
+import java.util.Random;
 
 import com.mightydanp.rodrcore.common.block.BlockCampFire;
 import com.mightydanp.rodrcore.common.item.ModItems;
+import com.mightydanp.rodrcore.common.item.crafting.CampFirePanRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampFirePotRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampFireRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampFireSmallCrucibleRecipes;
 import com.mightydanp.rodrcore.common.lib.GuiReference;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -13,6 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,19 +30,21 @@ import net.minecraftforge.oredict.OreDictionary;
 public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 	private String localizedName;
 
-	private static final int[] slots_top = new int[] { 0 };
-	private static final int[] slots_bottom = new int[] { 2 };
+	private static final int[] slots_top = new int[] { 0, 3 };
+	private static final int[] slots_bottom = new int[] { 2, 4 };
 	private static final int[] slots_sides = new int[] { 1 };
 
-	private ItemStack[] slots = new ItemStack[3];
+	private ItemStack[] slots = new ItemStack[5];
+
+	Random random = new Random();
 
 	public int furnaceSpeed = 200;
+	public static final int maxDecayTime = 400;
 	public int burnTime;
 	public int currentItemBurnTime;
 	public int cookTime;
 	public boolean burning;
-	public boolean burnableItem;
-	// public int canStart = this.slots[1].stackSize = 0;
+	// public int canStart = this.slots[2].stackSize = 0;
 
 	public String getInvName() {
 		return this.isInvNameLocalized() ? this.localizedName : "container.camp_fire";
@@ -151,7 +158,6 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		this.burnTime = nbt.getShort("BurnTime");
 		this.cookTime = nbt.getShort("CookTime");
 		this.burning = nbt.getBoolean("Burning");
-		this.burnableItem = nbt.getBoolean("BurnableItem");
 		this.currentItemBurnTime = getItemBurnTime(this.slots[1]);
 
 		if (nbt.hasKey("CustomName", 8)) {
@@ -164,7 +170,6 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		nbt.setShort("BurnTime", (short) this.burnTime);
 		nbt.setShort("CookTime", (short) this.cookTime);
 		nbt.setBoolean("Burning", (boolean) this.burning);
-		nbt.setBoolean("BurnableItem", (boolean) this.burnableItem);
 		NBTTagList nbttaglist = new NBTTagList();
 
 		for (int i = 0; i < this.slots.length; ++i) {
@@ -194,6 +199,16 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 		if (this.burnTime > 0) {
 			this.burnTime--;
+			ItemStack itemStackAsh = new ItemStack(ModItems.ash);
+
+			int i = random.nextInt((168 - 0) + 1) + 0;
+			if (i == random.nextInt((168 - 0) + 1) + 0) {
+				if (this.slots[4] == null) {
+					this.slots[4] = itemStackAsh.copy();
+				} else if (this.slots[4].isItemEqual(itemStackAsh)) {
+					this.slots[4].stackSize += itemStackAsh.stackSize;
+				}
+			}
 		}
 
 		if (!this.worldObj.isRemote) {
@@ -255,23 +270,49 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		if (this.slots[0] == null) {
 			return false;
 		} else {
-			ItemStack itemstack = CampFireRecipes.smelting().getSmeltingResult(this.slots[0]);
-			if (itemstack == null) {
+			ItemStack itemStack = CampFireRecipes.smelting().getSmeltingResult(this.slots[0]);
+
+			if (this.slots[3] != null) {
+				if (this.slots[3].getItem() == ModItems.smallCrucible) {
+					itemStack = CampFireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
+				}
+				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clayPan) {
+					itemStack = CampFirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
+				}
+				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clayPot) {
+					itemStack = CampFirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
+				}
+			}
+
+			if (itemStack == null) {
 				this.cookTime = 0;
 				return false;
 			}
 			if (this.slots[2] == null)
 				return true;
-			if (!this.slots[2].isItemEqual(itemstack))
+			if (!this.slots[2].isItemEqual(itemStack))
 				return false;
-			int result = slots[2].stackSize + itemstack.stackSize;
+
+			int result = slots[2].stackSize + itemStack.stackSize;
 			return result <= getInventoryStackLimit() && result <= this.slots[2].getMaxStackSize();
 		}
 	}
 
 	private void smeltItem() {
-		if (this.canSmelt() && burning == true) {
+		if (this.canSmelt() && burning == true && this.slots[0] != null) {
 			ItemStack itemStack = CampFireRecipes.smelting().getSmeltingResult(this.slots[0]);
+
+			if (this.slots[3] != null) {
+				if (this.slots[3].getItem() == ModItems.smallCrucible) {
+					itemStack = CampFireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
+				}
+				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clayPan) {
+					itemStack = CampFirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
+				}
+				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clayPot) {
+					itemStack = CampFirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
+				}
+			}
 
 			if (this.slots[2] == null) {
 				this.slots[2] = itemStack.copy();
@@ -306,10 +347,29 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-		if (slot == 2) {
+		if (slot == 2 || slot == 4) {
 			return false;
 		}
+		if (slot == 3 && isPan(itemStack) || isPot(itemStack)) {
+			return true;
+		}
 		return slot == 1 ? isItemFuel(itemStack) : true;
+	}
+
+	private static boolean isPan(ItemStack stack) {
+		if (stack == null) {
+			return false;
+		}
+
+		return stack.getItem() == ModItems.pan;
+	}
+
+	private static boolean isPot(ItemStack stack) {
+		if (stack == null) {
+			return false;
+		}
+
+		return stack.getItem() == ModItems.pot;
 	}
 
 	@Override

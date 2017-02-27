@@ -4,7 +4,18 @@ tile.ore_sand_tin.name=Tin Ore
 tile.ore_sand_copper.name=Copper Ore
 tile.camp_fire_idle.name=Camp Fire
 
+item.ash.name=Ashes
+item.pan.name=Pan
+item.clay_pan.name=Clay Pan
+item.unfired_clay_pan.name=Unfired Clay Pan
+item.pan.name=Pan
+item.clay_pan.name=Clay Pan
+item.unfired_clay_pot.name=Unfired Clay Pot
+item.pot.name=Pot
+item.small_crucible.name=Small Crucible
 item.rock.name=Rock
+
+
 
 container.camp_fire=Camp Fire
 

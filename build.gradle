@@ -17,16 +17,44 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "0.1"
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.version}"
 group= "com.mightydanp.rodrcore"
 archivesBaseName = "RodRCore"
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 minecraft {
-    version = "1.7.10-10.13.4.1614-1.7.10"
+    version = "1.7.10-10.13.4.1558-1.7.10"
     runDir = "eclipse"
 }
 
-dependencies {}
+configurations {
+    provided
+	}
+
+repositories {
+    maven {
+        name 'Forge'
+        url 'http://files.minecraftforge.net/maven'
+    }
+    maven {
+        name = "chickenbones"
+        url = "http://chickenbones.net/maven/"
+    }
+}
+
+dependencies {
+    provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
+	provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
+    provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
+}
 
 processResources{
     inputs.property "version", project.version
