@@ -5,10 +5,10 @@ import java.util.*;
 import com.mightydanp.rodrcore.api.common.handler.OreRecipeElement;
 import com.mightydanp.rodrcore.client.gui.inventory.GuiCampFire;
 import com.mightydanp.rodrcore.common.item.ModItems;
-import com.mightydanp.rodrcore.common.item.crafting.CampFirePanRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.CampFirePotRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.CampFireRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.CampFireSmallCrucibleRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfirePotRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfireRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfireSmallCrucibleRecipes;
 import com.mightydanp.rodrcore.common.lib.Reference;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityCampFire;
 
@@ -36,20 +36,20 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 
 		public CampfireCachedRecipe(OreRecipeElement _input, ItemStack _output, String neededItem)
 		{
-			input = new PositionedStack(_input.getValidItems(), 53, 1);
-			output = new PositionedStack(_output, 113, 23);
+			input = new PositionedStack(_input.getValidItems(), 51, 6);
+			output = new PositionedStack(_output, 111, 10);
 			
 			if(neededItem == "pan")
 			{
-				pan = new PositionedStack(new ItemStack(ModItems.pan), 27, 24);
+				pan = new PositionedStack(new ItemStack(ModItems.pan), 25, 24);
 			}
 			if(neededItem == "pot")
 			{
-				pot = new PositionedStack(new ItemStack(ModItems.pot), 27, 24);
+				pot = new PositionedStack(new ItemStack(ModItems.pot), 25, 24);
 			}
 			if(neededItem == "small_crucible")
 			{
-				smallCrucible = new PositionedStack(new ItemStack(ModItems.smallCrucible), 27, 24);
+				smallCrucible = new PositionedStack(new ItemStack(ModItems.smallCrucible), 25, 24);
 			}
 		}
 
@@ -90,7 +90,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 
 		public FuelPair(ItemStack ingred, int burnTime)
 		{
-			this.stack = new PositionedStack(ingred, 53, 46, false);
+			this.stack = new PositionedStack(ingred, 45, 48, false);
 			this.burnTime = burnTime;
 		}
 	}
@@ -116,19 +116,19 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return Reference.MODID + ":textures/gui/container/campfire.png";
+		return Reference.MODID + ":" + "textures/gui/container/camp_fire.png";
 	}
 
 	@Override
 	public String getRecipeName()
 	{
-		return I18n.format("container.campfire");
+		return I18n.format("container.camp_fire");
 	}
 
 	@Override
 	public void loadCraftingRecipes(ItemStack result)
 	{
-		for (Object obj : CampFireRecipes.getSmeltingList().entrySet())
+		for (Object obj : CampfireRecipes.getSmeltingList().entrySet())
 		{
 			Map.Entry entry = (Map.Entry)obj;
 
@@ -143,7 +143,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 			}
 		}
 
-		for (Object obj : CampFirePanRecipes.getSmeltingList().entrySet())
+		for (Object obj : CampfirePanRecipes.getSmeltingList().entrySet())
 		{
 			Map.Entry entry = (Map.Entry)obj;
 
@@ -158,7 +158,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 			}
 		}
 		
-		for (Object obj : CampFirePotRecipes.getSmeltingList().entrySet())
+		for (Object obj : CampfirePotRecipes.getSmeltingList().entrySet())
 		{
 			Map.Entry entry = (Map.Entry)obj;
 
@@ -173,7 +173,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 			}
 		}
 		
-		for (Object obj : CampFireSmallCrucibleRecipes.getSmeltingList().entrySet())
+		for (Object obj : CampfireSmallCrucibleRecipes.getSmeltingList().entrySet())
 		{
 			Map.Entry entry = (Map.Entry)obj;
 
@@ -192,7 +192,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient)
 	{
-		for (Object obj : CampFireRecipes.getSmeltingList().entrySet())
+		for (Object obj : CampfireRecipes.getSmeltingList().entrySet())
 		{
 			Map.Entry entry = (Map.Entry)obj;
 
@@ -205,7 +205,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 			}
 		}
 
-		for (Object obj : CampFirePanRecipes.getSmeltingList().entrySet())
+		for (Object obj : CampfirePanRecipes.getSmeltingList().entrySet())
 		{
 			Map.Entry entry = (Map.Entry)obj;
 
@@ -218,7 +218,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 			}
 		}
 		
-		for (Object obj : CampFirePotRecipes.getSmeltingList().entrySet())
+		for (Object obj : CampfirePotRecipes.getSmeltingList().entrySet())
 		{
 			Map.Entry entry = (Map.Entry)obj;
 
@@ -231,7 +231,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 			}
 		}
 		
-		for (Object obj : CampFireSmallCrucibleRecipes.getSmeltingList().entrySet())
+		for (Object obj : CampfireSmallCrucibleRecipes.getSmeltingList().entrySet())
 		{
 			Map.Entry entry = (Map.Entry)obj;
 
@@ -248,9 +248,8 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 	@Override
 	public void drawExtras(int recipe)
 	{
-		drawProgressBar(53, 21, 176, 0, 14, 22, 48, 7);
-		drawProgressBar(76, 22, 176, 22, 24, 16, 48, 0);
-		drawProgressBar(72, 46, 176, 39, 3, 16, 48, 7);
+		drawProgressBar(51, 25, 176, 0, 14, 14, 48, 7);
+		drawProgressBar(74, 23, 176, 14, 24, 17, 48, 0);
 	}
 
 	@Override

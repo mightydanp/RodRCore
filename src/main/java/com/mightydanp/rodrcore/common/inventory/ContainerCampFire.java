@@ -27,7 +27,7 @@ public class ContainerCampFire extends Container {
 		this.addSlotToContainer(new Slot(tileEntityCampFire, 0, 56, 17));
 		this.addSlotToContainer(new Slot(tileEntityCampFire, 1, 56, 53));
 		this.addSlotToContainer(new SlotFurnace(inventoryPlayer.player, tileEntityCampFire, 2, 116, 21));
-		this.addSlotToContainer(new Slot(tileEntityCampFire, 3, 30, 35));
+		this.addSlotToContainer(new SlotCampFireItemNeeded(tileEntityCampFire, 3, 30, 35));
 		this.addSlotToContainer(new SlotEmpty(tileEntityCampFire, 4, 116, 53));
 
 		// player Inventory

@@ -16,55 +16,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class CampFirePanRecipes {
-	private static final CampFirePanRecipes smeltingBase = new CampFirePanRecipes();
-	/** The list of smelting results. */
-	private Map smeltingList = new HashMap();
-	private Map experienceList = new HashMap();
-	private static final String __OBFID = "CL_00000085";
+public class CampfirePanRecipes {
+	
+	private static final CampfirePanRecipes SMELTINGBASE = new CampfirePanRecipes();
 
-	/**
-	 * Used to call methods addSmelting and getSmeltingResult.
-	 */
-	public static CampFirePanRecipes smelting() {
-		return smeltingBase;
-	}
+	private Map<OreRecipeElement, ItemStack> smeltingList = new HashMap<OreRecipeElement, ItemStack>();
+	private Map<ItemStack, Float> experienceList = new HashMap<ItemStack, Float>();
 
-	private CampFirePanRecipes() {
-        this.addRecipe(Items.porkchop, new ItemStack(Items.cooked_porkchop), 0.35F);
-        this.addRecipe(Items.beef, new ItemStack(Items.cooked_beef), 0.35F);
-        this.addRecipe(Items.chicken, new ItemStack(Items.cooked_chicken), 0.35F);
-		
-		ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
-		
-		int i = afishtype.length;
 
-        for (int j = 0; j < i; ++j)
-        {
-            ItemFishFood.FishType fishtype = afishtype[j];
+	private CampfirePanRecipes() {}
 
-            if (fishtype.func_150973_i())
-            {
-                this.addRecipe(new ItemStack(Items.fish, 1, fishtype.func_150976_a()), new ItemStack(Items.cooked_fished, 1, fishtype.func_150976_a()), 0.35F);
-            }
-        }
-	}
-
-    public void addRecipe(Block input, ItemStack output, float experience)
-    {
-    	smelting().addLists(new OreRecipeElement(new ItemStack(Item.getItemFromBlock(input))), output, experience);
-    }
-
-    public void addRecipe(Item input, ItemStack output, float experience)
-    {
-        smelting().addLists(new OreRecipeElement(new ItemStack(input)), output, experience);
-    }
-
-	public static void addRecipe(ItemStack input, ItemStack output, float experience)
+	public static void addRecipe(Item input, ItemStack output, float experience)
 	{
-		smelting().putLists(new OreRecipeElement(input), output, experience);
+		smelting().addLists(new OreRecipeElement(new ItemStack(input)), output, experience);
 	}
-    
+	
 	public static void addRecipe(String oreDictEntry, ItemStack output, float experience)
 	{
 		smelting().addLists(new OreRecipeElement(oreDictEntry, 1), output, experience);
@@ -74,26 +40,44 @@ public class CampFirePanRecipes {
 	{
 		putLists(input, itemStack, experience);
 	}
-	
+
+	public static CampfirePanRecipes smelting()
+	{
+		return SMELTINGBASE;
+	}
+
 	public void putLists(OreRecipeElement input, ItemStack itemStack2, float experience)
 	{
 		smeltingList.put(input, itemStack2);
-		experienceList.put(itemStack2, experience);
+		experienceList.put(itemStack2, Float.valueOf(experience));
 	}
 
-	public ItemStack getSmeltingResult(ItemStack itemStack) {
+	public static void addRecipe(Block input, ItemStack output, float experience)
+	{
+		smelting().addLists(new OreRecipeElement(new ItemStack(Item.getItemFromBlock(input))), output, experience);
+	}
+
+	public static void addRecipe(ItemStack input, ItemStack output, float experience)
+	{
+		smelting().putLists(new OreRecipeElement(input), output, experience);
+	}
+
+	public ItemStack getSmeltingResult(ItemStack stack)
+	{
 		Iterator<Entry<OreRecipeElement, ItemStack>> iterator = smeltingList.entrySet().iterator();
 		Entry<OreRecipeElement, ItemStack> entry;
 
-		do {
-			if (!iterator.hasNext()) {
+		do
+		{
+			if (!iterator.hasNext())
+			{
 				return null;
 			}
 
-			entry = (Entry) iterator.next();
-		} while (!canBeSmelted(itemStack, entry.getKey()));
+			entry = iterator.next();
+		} while (!canBeSmelted(stack, entry.getKey()));
 
-		return (ItemStack) entry.getValue();
+		return (ItemStack)entry.getValue();
 	}
 
 	private boolean canBeSmelted(ItemStack stack, OreRecipeElement ore)
@@ -101,7 +85,7 @@ public class CampFirePanRecipes {
 		return ore.matches(stack);
 	}
 	
-	private boolean canBeSmelted(ItemStack stack, ItemStack stack2)
+	private boolean canBeSmelted(ItemStack stack, ItemStack stack2) 
 	{
 		return stack2.getItem() == stack.getItem()
 				&& (stack2.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack2.getItemDamage() == stack
@@ -121,7 +105,7 @@ public class CampFirePanRecipes {
 			}
 
 			entry = iterator.next();
-		} while (!canBeSmelted(stack, (ItemStack)entry.getKey()));
+		} while (!canBeSmelted(stack, entry.getKey()));
 
 		if (stack.getItem().getSmeltingExperience(stack) != -1)
 		{
@@ -141,3 +125,4 @@ public class CampFirePanRecipes {
 		return smelting().experienceList;
 	}
 }
+

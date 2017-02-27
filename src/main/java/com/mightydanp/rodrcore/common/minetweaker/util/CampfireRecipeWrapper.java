@@ -3,10 +3,10 @@ package com.mightydanp.rodrcore.common.minetweaker.util;
 import org.lwjgl.Sys;
 
 import com.mightydanp.rodrcore.api.common.handler.OreRecipeElement;
-import com.mightydanp.rodrcore.common.item.crafting.CampFirePanRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.CampFirePotRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.CampFireRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.CampFireSmallCrucibleRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfirePotRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfireRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfireSmallCrucibleRecipes;
 
 import net.minecraft.item.ItemStack;
 
@@ -64,19 +64,19 @@ public class CampfireRecipeWrapper
 	{
 		if(neededItem == "null")
 		{
-			CampFireRecipes.smelting().putLists(input, output, xp);
+			CampfireRecipes.smelting().putLists(input, output, xp);
 		}
 		if(neededItem == "pan")
 		{
-			CampFirePanRecipes.smelting().putLists(input, output, xp);
+			CampfirePanRecipes.smelting().putLists(input, output, xp);
 		}
 		if(neededItem == "pot")
 		{
-			CampFirePotRecipes.smelting().putLists(input, output, xp);
+			CampfirePotRecipes.smelting().putLists(input, output, xp);
 		}
 		if(neededItem == "small_crucible")
 		{
-			CampFireSmallCrucibleRecipes.smelting().putLists(input, output, xp);
+			CampfireSmallCrucibleRecipes.smelting().putLists(input, output, xp);
 		}
 	}
 	

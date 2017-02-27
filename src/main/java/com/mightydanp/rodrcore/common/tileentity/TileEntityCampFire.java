@@ -5,10 +5,10 @@ import java.util.Random;
 
 import com.mightydanp.rodrcore.common.block.BlockCampFire;
 import com.mightydanp.rodrcore.common.item.ModItems;
-import com.mightydanp.rodrcore.common.item.crafting.CampFirePanRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.CampFirePotRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.CampFireRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.CampFireSmallCrucibleRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfirePotRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfireRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.CampfireSmallCrucibleRecipes;
 import com.mightydanp.rodrcore.common.lib.GuiReference;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -270,17 +270,17 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		if (this.slots[0] == null) {
 			return false;
 		} else {
-			ItemStack itemStack = CampFireRecipes.smelting().getSmeltingResult(this.slots[0]);
+			ItemStack itemStack = CampfireRecipes.smelting().getSmeltingResult(this.slots[0]);
 
 			if (this.slots[3] != null) {
 				if (this.slots[3].getItem() == ModItems.smallCrucible) {
-					itemStack = CampFireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
+					itemStack = CampfireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clayPan) {
-					itemStack = CampFirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
+					itemStack = CampfirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clayPot) {
-					itemStack = CampFirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
+					itemStack = CampfirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 			}
 
@@ -300,17 +300,17 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 	private void smeltItem() {
 		if (this.canSmelt() && burning == true && this.slots[0] != null) {
-			ItemStack itemStack = CampFireRecipes.smelting().getSmeltingResult(this.slots[0]);
+			ItemStack itemStack = CampfireRecipes.smelting().getSmeltingResult(this.slots[0]);
 
 			if (this.slots[3] != null) {
 				if (this.slots[3].getItem() == ModItems.smallCrucible) {
-					itemStack = CampFireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
+					itemStack = CampfireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clayPan) {
-					itemStack = CampFirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
+					itemStack = CampfirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clayPot) {
-					itemStack = CampFirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
+					itemStack = CampfirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 			}
 
