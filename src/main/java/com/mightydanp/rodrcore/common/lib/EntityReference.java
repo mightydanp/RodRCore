@@ -7,5 +7,6 @@ public class EntityReference {
 	public static final String TWIGS_NAME = "twigs";
 	public static final String ROCKS_NAME = "rocks";
 	//Block End\\
+	public static final String FURNACE_NAME = "new_furnace";
 
 }

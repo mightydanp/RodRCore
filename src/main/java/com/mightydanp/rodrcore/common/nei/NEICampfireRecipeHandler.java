@@ -90,7 +90,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 
 		public FuelPair(ItemStack ingred, int burnTime)
 		{
-			this.stack = new PositionedStack(ingred, 45, 48, false);
+			this.stack = new PositionedStack(ingred, 51, 42, false);
 			this.burnTime = burnTime;
 		}
 	}

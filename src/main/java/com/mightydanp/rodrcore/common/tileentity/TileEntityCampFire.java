@@ -54,7 +54,7 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		return this.localizedName != null && this.localizedName.length() > 0;
 	}
 
-	public void sedGuiDisplayName(String displayName) {
+	public void setGuiDisplayName(String displayName) {
 		this.localizedName = displayName;
 	}
 
@@ -332,9 +332,6 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		if (itemStack != null) {
 			int fuelVaul = (GameRegistry.getFuelValue(itemStack) > 0 ? GameRegistry.getFuelValue(itemStack)
 					: TileEntityFurnace.getItemBurnTime(itemStack));
-			if (itemStack.getItem() == OreDictionary.getOres("logWood", true)) {
-				return 200;
-			}
 
 			return fuelVaul;
 		}

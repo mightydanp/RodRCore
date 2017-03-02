@@ -4,10 +4,8 @@ import java.util.Random;
 
 import com.mightydanp.rodrcore.api.common.block.CBlock;
 import com.mightydanp.rodrcore.common.RodRCore;
-import com.mightydanp.rodrcore.common.lib.BlockReference;
 import com.mightydanp.rodrcore.common.lib.GuiReference;
-import com.mightydanp.rodrcore.common.lib.Reference;
-import com.mightydanp.rodrcore.common.tileentity.TileEntityCampFire;
+import com.mightydanp.rodrcore.common.tileentity.TileEntityNewFurnace;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -15,8 +13,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,53 +23,45 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class BlockCampFire extends BlockContainer {
+public class BlockNewFurnace extends BlockContainer {
 
 	private final boolean isActive;
-	public static boolean islit;
 
 	private final Random random = new Random();
 
 	private static boolean keepInventory;
 
-	protected BlockCampFire(String unlocalizedName, Boolean isActive) {
-		super(Material.plants);
+	protected BlockNewFurnace(String unlocalizedName, Boolean isActive) {
+		super(Material.rock);
 		this.isActive = isActive;
 		this.setHardness(1.0F);
 		this.setBlockName(unlocalizedName);
-		this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.3750F, 0.9375F);
-	}
-
-	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-		return Item.getItemFromBlock(ModBlocks.campFireIdle);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-		return new TileEntityCampFire();
+		return new TileEntityNewFurnace();
 	}
-
+	
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
-		TileEntityCampFire tileentityCampfire = (TileEntityCampFire) world.getTileEntity(x, y, z);
+		TileEntityNewFurnace TileEntityNewFurnace = (TileEntityNewFurnace) world.getTileEntity(x, y, z);
 		ItemStack getHeldItem = (ItemStack)(entityPlayer.getCurrentEquippedItem() != null ? entityPlayer.getCurrentEquippedItem(): null);
 		Item flintAndSteel = Items.flint_and_steel;
 		if (!world.isRemote) {
 			if (!entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() != null && getHeldItem.getItem() == flintAndSteel) {
 				if (!world.isRaining() && !world.isThundering()) {
-					tileentityCampfire.setBurning(true);
+					TileEntityNewFurnace.setLit(true);
 					if(getHeldItem.getItem() == Items.flint_and_steel && getHeldItem != null && !this.isActive){
 						getHeldItem.setItemDamage(getHeldItem.getItemDamage() + 1);
 						world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "fire.ignite", 1.0F, random.nextFloat() * 0.4F + 0.8F);
 					}
 				}
 			}
-			FMLNetworkHandler.openGui(entityPlayer, RodRCore.instance, GuiReference.CAMPFIRE_GUI_ID, world, x, y, z);
+			FMLNetworkHandler.openGui(entityPlayer, RodRCore.instance, GuiReference.FURNACE_GUI_ID, world, x, y, z);
 		}
 
 		return true;
@@ -86,16 +74,16 @@ public class BlockCampFire extends BlockContainer {
 		}
 	}
 
-	public static void updateCampFireBlockState(boolean active, World worldObj, int x, int y, int z) {
+	public static void updateFurnaceBlockState(boolean active, World worldObj, int x, int y, int z) {
 		int i = worldObj.getBlockMetadata(x, y, z);
 
 		TileEntity tileEntity = worldObj.getTileEntity(x, y, z);
 		keepInventory = true;
 
 		if (active) {
-			worldObj.setBlock(x, y, z, ModBlocks.campFireActive);
+			worldObj.setBlock(x, y, z, ModBlocks.furnaceActive);
 		} else {
-			worldObj.setBlock(x, y, z, ModBlocks.campFireIdle);
+			worldObj.setBlock(x, y, z, ModBlocks.furnaceIdle);
 		}
 
 		keepInventory = false;
@@ -112,19 +100,19 @@ public class BlockCampFire extends BlockContainer {
 		if (world.isRemote)
 			return;
 
-		TileEntityCampFire tileentityCampfire = (TileEntityCampFire) world.getTileEntity(x, y, z);
+		TileEntityNewFurnace TileEntityNewFurnace = (TileEntityNewFurnace) world.getTileEntity(x, y, z);
 
-		if (tileentityCampfire != null) {
-			if (tileentityCampfire.burning(world, x, y, z, true))
+		if (TileEntityNewFurnace != null) {
+			if (TileEntityNewFurnace.burning(world, x, y, z, true))
 				if (!world.isRaining() || !world.isThundering())
 					if (world.canBlockSeeTheSky(x, y, z))
-						tileentityCampfire.isBurning();
+						TileEntityNewFurnace.isBurning();
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-		TileEntityCampFire tileentityCampfire = (TileEntityCampFire) world.getTileEntity(x, y, z);
+		TileEntityNewFurnace TileEntityNewFurnace = (TileEntityNewFurnace) world.getTileEntity(x, y, z);
 		if (this.isActive) {
 			float x1 = (float) x + 1.0F;
 			float y1 = (float) y + 0.1F +  random.nextFloat() * 6.0F / 16.0F;
@@ -136,32 +124,14 @@ public class BlockCampFire extends BlockContainer {
 			
 		}
 	}
-
-	/**
-	 * Triggered whenever an entity collides with this block (enters into the
-	 * block). Args: world, x, y, z, entity
-	 */
-	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		super.onEntityCollidedWithBlock(world, x, y, z, entity);
-
-		TileEntityCampFire tileentityCampfire = (TileEntityCampFire) world.getTileEntity(x, y, z);
-
-		if (tileentityCampfire != null) {
-			if (this.isActive) {
-				entity.attackEntityFrom(DamageSource.inFire, 0.5F);
-				entity.setFire(8);
-			}
-		}
-	}
-
+	
 	public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int p_149749_6_) {
 		if (!keepInventory) {
-			TileEntityCampFire tileEntityCampFire = (TileEntityCampFire) world.getTileEntity(x, y, z);
+			TileEntityNewFurnace TileEntityNewFurnace = (TileEntityNewFurnace) world.getTileEntity(x, y, z);
 
-			if (tileEntityCampFire != null) {
-				for (int i1 = 0; i1 < tileEntityCampFire.getSizeInventory(); ++i1) {
-					ItemStack itemstack = tileEntityCampFire.getStackInSlot(i1);
+			if (TileEntityNewFurnace != null) {
+				for (int i1 = 0; i1 < TileEntityNewFurnace.getSizeInventory(); ++i1) {
+					ItemStack itemstack = TileEntityNewFurnace.getStackInSlot(i1);
 
 					if (itemstack != null) {
 						float f = this.random.nextFloat() * 0.8F + 0.1F;
@@ -200,20 +170,7 @@ public class BlockCampFire extends BlockContainer {
 
 		super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
 	}
-
-	public boolean hasComparatorInputOverride() {
-		return true;
-	}
-
-	public int getComparatorInputOverride(World world, int x, int y, int z, int i) {
-		return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
-	}
-
-	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		return new ItemStack(ModBlocks.campFireIdle, 1, 0);
-	}
-
+	
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase,
 			ItemStack itemStack) {
 		int l = MathHelper.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
@@ -235,10 +192,24 @@ public class BlockCampFire extends BlockContainer {
 		}
 
 		if (itemStack.hasDisplayName()) {
-			((TileEntityCampFire) world.getTileEntity(x, y, z)).setGuiDisplayName(itemStack.getDisplayName());
+			((TileEntityNewFurnace) world.getTileEntity(x, y, z)).setGuiDisplayName(itemStack.getDisplayName());
 		}
 	}
 
+	public boolean hasComparatorInputOverride() {
+		return true;
+	}
+
+	public int getComparatorInputOverride(World world, int x, int y, int z, int i) {
+		return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
+	}
+
+	
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+		return new ItemStack(ModBlocks.furnaceIdle, 1, 0);
+	}
+	
 	@Override
 	public int getRenderType() {
 		return -1;
@@ -251,11 +222,5 @@ public class BlockCampFire extends BlockContainer {
 
 	public boolean renderAsNormalBlock() {
 		return false;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon(Reference.MODID + ":" + "camp_fire");
 	}
 }

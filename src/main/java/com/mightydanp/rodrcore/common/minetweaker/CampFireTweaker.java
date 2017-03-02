@@ -100,6 +100,7 @@ public class CampFireTweaker {
 			this.input = input;
 			this.output = MineTweakerMC.getItemStack(output);
 			this.neededItem = neededItem;
+			System.out.println(this.neededItem);
 			if (neededItem == "null") {
 				this.xp = CampfireRecipes.smelting().giveExperience(this.output);
 			}
@@ -108,15 +109,17 @@ public class CampFireTweaker {
 			}
 			if (neededItem == "pot") {
 				this.xp = CampfirePotRecipes.smelting().giveExperience(this.output);
+				System.out.println("Xp Is Working");
 			}
 			if (neededItem == "small_crucible") {
 				this.xp = CampfireSmallCrucibleRecipes.smelting().giveExperience(this.output);
 			}
+
 		}
 
 		@Override
 		public void apply() {
-			if (neededItem == "null") {
+			if (this.neededItem == "null") {
 				if (input instanceof IOreDictEntry) {
 					inputAsORE = new OreRecipeElement(((IOreDictEntry) input).getName(), 1);
 					CampfireRecipes.getSmeltingList().put(inputAsORE, output);
@@ -127,23 +130,36 @@ public class CampFireTweaker {
 					CampfireRecipes.getXPList().put(output, xp);
 				}
 			}
-			if (neededItem == "pan") {
+			if (this.neededItem == "pan") {
 				if (input instanceof IOreDictEntry) {
 					inputAsORE = new OreRecipeElement(((IOreDictEntry) input).getName(), 1);
 					CampfirePanRecipes.getSmeltingList().put(inputAsORE, output);
 					CampfirePanRecipes.getXPList().put(output, xp);
+				}else if (input instanceof IIngredient) {
+					inputAsORE = new OreRecipeElement(MineTweakerMC.getItemStack(input));
+					CampfirePanRecipes.getSmeltingList().put(inputAsORE, output);
+					CampfirePanRecipes.getXPList().put(output, xp);
 				}
 			}
-			if (neededItem == "pot") {
+			if (this.neededItem == "pot") {
 				if (input instanceof IOreDictEntry) {
 					inputAsORE = new OreRecipeElement(((IOreDictEntry) input).getName(), 1);
 					CampfirePotRecipes.getSmeltingList().put(inputAsORE, output);
 					CampfirePotRecipes.getXPList().put(output, xp);
+					System.out.println("Smelting Is Working");
+				}else if (input instanceof IIngredient) {
+					inputAsORE = new OreRecipeElement(MineTweakerMC.getItemStack(input));
+					CampfirePotRecipes.getSmeltingList().put(inputAsORE, output);
+					CampfirePotRecipes.getXPList().put(output, xp);
 				}
 			}
-			if (neededItem == "small_crucible") {
+			if (this.neededItem == "small_crucible") {
 				if (input instanceof IOreDictEntry) {
 					inputAsORE = new OreRecipeElement(((IOreDictEntry) input).getName(), 1);
+					CampfireSmallCrucibleRecipes.getSmeltingList().put(inputAsORE, output);
+					CampfireSmallCrucibleRecipes.getXPList().put(output, xp);
+				}else if (input instanceof IIngredient) {
+					inputAsORE = new OreRecipeElement(MineTweakerMC.getItemStack(input));
 					CampfireSmallCrucibleRecipes.getSmeltingList().put(inputAsORE, output);
 					CampfireSmallCrucibleRecipes.getXPList().put(output, xp);
 				}
@@ -158,19 +174,20 @@ public class CampFireTweaker {
 
 		@Override
 		public void undo() {
-			if (neededItem == "null") {
+			if (this.neededItem == "null") {
 				CampfireRecipes.getSmeltingList().remove(inputAsORE);
 				CampfireRecipes.getXPList().remove(output);
 			}
-			if (neededItem == "pan") {
+			if (this.neededItem == "pan") {
 				CampfirePanRecipes.getSmeltingList().remove(inputAsORE);
 				CampfirePanRecipes.getXPList().remove(output);
 			}
-			if (neededItem == "pot") {
+			if (this.neededItem == "pot") {
 				CampfirePotRecipes.getSmeltingList().remove(inputAsORE);
 				CampfirePotRecipes.getXPList().remove(output);
+				System.out.println("undo Is Working");
 			}
-			if (neededItem == "small_crucible") {
+			if (this.neededItem == "small_crucible") {
 				CampfireSmallCrucibleRecipes.getSmeltingList().remove(inputAsORE);
 				CampfireSmallCrucibleRecipes.getXPList().remove(output);
 			}
@@ -227,42 +244,43 @@ public class CampFireTweaker {
 		@Override
 		public void apply() {
 			ItemStack inputAsStack = MineTweakerMC.getItemStack(input);
-			Iterator<OreRecipeElement> recipeIter = CampfirePanRecipes.getSmeltingList().keySet().iterator();;
-			
-			if (neededItem == "null") {
+			for (Iterator<OreRecipeElement> recipeIter = CampfireRecipes.getSmeltingList().keySet()
+					.iterator(); recipeIter.hasNext();) {
 				recipeIter = CampfireRecipes.getSmeltingList().keySet().iterator();
-				recipeIter.hasNext();
-			}
-			if (neededItem == "pan") {
-				recipeIter = CampfirePanRecipes.getSmeltingList().keySet().iterator();
-				recipeIter.hasNext();
-			}
-			if (neededItem == "pot") {
-				recipeIter = CampfirePotRecipes.getSmeltingList().keySet().iterator();
-				recipeIter.hasNext();
-			}
-			if (neededItem == "small_crucible") {
-				recipeIter =  CampfireSmallCrucibleRecipes.getSmeltingList().keySet().iterator();
-				recipeIter.hasNext();
-			}
-			removedORE = recipeIter.next();
+				removedORE = recipeIter.next();
 				if (removedORE.matches(inputAsStack)) {
 					recipeIter.remove();
-					
-					if (neededItem == "null") {
-						CampfireRecipes.getXPList().remove(output);
-					}
-					if (neededItem == "pan") {
-						CampfirePanRecipes.getXPList().remove(output);
-					}
-					if (neededItem == "pot") {
-						CampfirePotRecipes.getXPList().remove(output);
-					}
-					if (neededItem == "small_crucible") {
-						CampfireSmallCrucibleRecipes.getXPList().remove(output);
-					}
+					CampfireRecipes.getXPList().remove(output);
 				}
 			}
+			for (Iterator<OreRecipeElement> recipeIter = CampfirePanRecipes.getSmeltingList().keySet()
+					.iterator(); recipeIter.hasNext();) {
+				recipeIter = CampfirePanRecipes.getSmeltingList().keySet().iterator();
+				removedORE = recipeIter.next();
+				if (removedORE.matches(inputAsStack)) {
+					recipeIter.remove();
+					CampfirePanRecipes.getXPList().remove(output);
+				}
+			}
+			for (Iterator<OreRecipeElement> recipeIter = CampfirePotRecipes.getSmeltingList().keySet()
+					.iterator(); recipeIter.hasNext();) {
+				recipeIter = CampfirePotRecipes.getSmeltingList().keySet().iterator();
+				removedORE = recipeIter.next();
+				if (removedORE.matches(inputAsStack)) {
+					recipeIter.remove();
+					CampfirePotRecipes.getXPList().remove(output);
+				}
+			}
+			for (Iterator<OreRecipeElement> recipeIter = CampfireSmallCrucibleRecipes.getSmeltingList().keySet()
+					.iterator(); recipeIter.hasNext();) {
+				recipeIter = CampfireSmallCrucibleRecipes.getSmeltingList().keySet().iterator();
+				removedORE = recipeIter.next();
+				if (removedORE.matches(inputAsStack)) {
+					recipeIter.remove();
+					CampfireSmallCrucibleRecipes.getXPList().remove(output);
+				}
+			}
+		}
 
 		@Override
 		public boolean canUndo() {
@@ -328,12 +346,12 @@ public class CampFireTweaker {
 					.entrySet().iterator(); recipeIter.hasNext();) {
 				this.checkAndRemoveRecipe(recipeIter, "pan");
 			}
-			for (Iterator<Entry<OreRecipeElement, ItemStack>> recipeIter = CampfirePotRecipes.getSmeltingList().entrySet()
-					.iterator(); recipeIter.hasNext();) {
+			for (Iterator<Entry<OreRecipeElement, ItemStack>> recipeIter = CampfirePotRecipes.getSmeltingList()
+					.entrySet().iterator(); recipeIter.hasNext();) {
 				this.checkAndRemoveRecipe(recipeIter, "pot");
 			}
-			for (Iterator<Entry<OreRecipeElement, ItemStack>> recipeIter = CampfireSmallCrucibleRecipes.getSmeltingList().entrySet()
-					.iterator(); recipeIter.hasNext();) {
+			for (Iterator<Entry<OreRecipeElement, ItemStack>> recipeIter = CampfireSmallCrucibleRecipes
+					.getSmeltingList().entrySet().iterator(); recipeIter.hasNext();) {
 				this.checkAndRemoveRecipe(recipeIter, "small_crucible");
 			}
 		}

@@ -10,6 +10,7 @@ import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.lib.*;
 import com.mightydanp.rodrcore.common.minetweaker.MineTweakerCompat;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityCampFire;
+import com.mightydanp.rodrcore.common.tileentity.TileEntityNewFurnace;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityRocks;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityTwigs;
 import com.mightydanp.rodrcore.common.world.gen.WorldGen;
@@ -55,6 +56,7 @@ public class RodRCore {
         GuiHandler guiHandler = new GuiHandler();
 		GameRegistry.registerWorldGenerator(new WorldGen(), 0);
 		GameRegistry.registerTileEntity(TileEntityCampFire.class, EntityReference.CAMPFIRE_NAME);
+		GameRegistry.registerTileEntity(TileEntityNewFurnace.class, EntityReference.FURNACE_NAME);
 		GameRegistry.registerTileEntity(TileEntityTwigs.class, EntityReference.TWIGS_NAME);
 		GameRegistry.registerTileEntity(TileEntityRocks.class, EntityReference.ROCKS_NAME);
 		if(Loader.isModLoaded("MineTweaker3"))

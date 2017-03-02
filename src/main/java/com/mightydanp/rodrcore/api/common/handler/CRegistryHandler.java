@@ -22,15 +22,11 @@ public class CRegistryHandler {
 	public static void registerOreDictionary(Object object, String oreDictionaryName, int meta){
 		if(object instanceof Item){
 			OreDictionary.registerOre(oreDictionaryName, (Item)object);
-			if(meta != 0){
 				OreDictionary.registerOre(oreDictionaryName, new ItemStack((Item)object, 1, meta));
-			}
 		}
 		if(object instanceof Block){
 			OreDictionary.registerOre(oreDictionaryName, (Block)object);
-			if(meta != 0){
 				OreDictionary.registerOre(oreDictionaryName, new ItemStack((Block)object, 1, meta));
-			}
 		}
 	}
 

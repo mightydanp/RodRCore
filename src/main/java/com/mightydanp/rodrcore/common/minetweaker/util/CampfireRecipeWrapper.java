@@ -40,41 +40,45 @@ public class CampfireRecipeWrapper
 		return xp;
 	}
 	
-	public String isRecipe() 
+	public Boolean isRecipe() 
 	{
-		return neededItem = "null";
+		neededItem = "null";
+		return true;
 	}
 	
-	public String isPanRecipe() 
+	public Boolean isPanRecipe() 
 	{
-		return neededItem = "pan";
+		neededItem = "pan";
+		return  true;
 	}
 	
-	public String isPotRecipe() 
+	public Boolean isPotRecipe() 
 	{
-		return neededItem = "pot";
+		neededItem = "pot";
+		return true;
 	}
 	
-	public String isSmallCrucibleRecipe() 
+	public Boolean isSmallCrucibleRecipe() 
 	{
-		return neededItem = "small_crucible";
+		neededItem = "small_crucible";
+		return true;
 	}
 
 	public void add()
 	{
-		if(neededItem == "null")
+		if(isRecipe())
 		{
 			CampfireRecipes.smelting().putLists(input, output, xp);
 		}
-		if(neededItem == "pan")
+		if(isPanRecipe())
 		{
 			CampfirePanRecipes.smelting().putLists(input, output, xp);
 		}
-		if(neededItem == "pot")
+		if(isPotRecipe())
 		{
 			CampfirePotRecipes.smelting().putLists(input, output, xp);
 		}
-		if(neededItem == "small_crucible")
+		if(isSmallCrucibleRecipe())
 		{
 			CampfireSmallCrucibleRecipes.smelting().putLists(input, output, xp);
 		}

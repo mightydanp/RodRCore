@@ -6,10 +6,12 @@ import com.mightydanp.rodrcore.common.RodRCore;
 import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfirePotRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfireSmallCrucibleRecipes;
+import com.mightydanp.rodrcore.common.item.crafting.NewFurnaceRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
 import com.mightydanp.rodrcore.common.lib.BlockReference;
 import com.mightydanp.rodrcore.common.lib.ItemReference;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishFood;
@@ -79,6 +81,8 @@ public class ModItems extends CRegistryHandler {
         CampfirePotRecipes.addRecipe(Items.potato, new ItemStack(Items.baked_potato), 0.35F);
 		CampfireSmallCrucibleRecipes.addRecipe(ModItems.unfiredClayPan, new ItemStack (ModItems.clayPan), 0.0F);
 		CampfireSmallCrucibleRecipes.addRecipe(ModItems.unfiredClayPot, new ItemStack (ModItems.clayPot), 0.0F);
+		CampfireSmallCrucibleRecipes.addRecipe(Blocks.sand, new ItemStack (Blocks.glass), 0.0F);
+		NewFurnaceRecipes.addRecipe(Blocks.sand, new ItemStack (Blocks.glass), 0.0F);
 	
 	}
 	
