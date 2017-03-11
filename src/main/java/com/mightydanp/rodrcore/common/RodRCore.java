@@ -55,6 +55,7 @@ public class RodRCore {
 		event.getModMetadata().version = Reference.VERSION;
         ModBlocks.preInit();
         ModItems.preInit();
+        TinkersFluidRegistry.preinit();
 		RodRCore.proxy.preInit(event);
     }
 

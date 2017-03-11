@@ -31,15 +31,15 @@ public class CTinkersMaterialHandler {
 
     public CTinkersMaterialHandler () {}
 
-    public CTinkersMaterialHandler (int id, String name, int durability, int miningSpeed, int miningLevel, int attack, float durabilityMod, float projSpeed, int drawSpeed, float mass, float fragility, String style, int color, String oreDict, int amount, boolean Stamped) {
+    public CTinkersMaterialHandler (int id, String name, int durability, int miningSpeed, int miningLevel, int attack, float handleMod, float projSpeed, int drawSpeed, float mass, float fragility, String style, int color, String oreDict, int amount, boolean Stamped) {
         MaterialID = id;
         MaterialName = name;
-        LocalizationString = "material.hxctic." + name.toLowerCase();
+        LocalizationString = "material." + name.toLowerCase();
         Durability = durability;
         MiningSpeed = miningSpeed;
         HarvestLevel = miningLevel;
         AttackDamage = attack;
-        HandleDurabilityModifier = durabilityMod;
+        HandleDurabilityModifier = handleMod;
         ProjectileSpeed = projSpeed;
         BowDrawSpeed = drawSpeed;
         ProjectileMass = mass;
@@ -51,15 +51,15 @@ public class CTinkersMaterialHandler {
         StampedMaterial = Stamped;
     }
 
-    public CTinkersMaterialHandler (int id, String name, int durability, int miningSpeed, int miningLevel, int attack, float durabilityMod, float projSpeed, int drawSpeed, float mass, float fragility, String style, int color, String oreDict, int amount, boolean Stamped, int reinforcement, int stonebound, int jaggy) {
+    public CTinkersMaterialHandler (int id, String name, int durability, int miningSpeed, int miningLevel, int attack, float handleMod, float projSpeed, int drawSpeed, float mass, float fragility, String style, int color, String oreDict, int amount, boolean Stamped, int reinforcement, int stonebound, int jaggy) {
         MaterialID = id;
         MaterialName = name;
-        LocalizationString = "material.hxctic." + name.toLowerCase();
+        LocalizationString = "material." + name.toLowerCase();
         Durability = durability;
         MiningSpeed = miningSpeed;
         HarvestLevel = miningLevel;
         AttackDamage = attack;
-        HandleDurabilityModifier = durabilityMod;
+        HandleDurabilityModifier = handleMod;
         ReinforcementLevel = reinforcement;
         StoneboundLevel = stonebound;
         JaggyLevel = jaggy;
@@ -74,15 +74,15 @@ public class CTinkersMaterialHandler {
         StampedMaterial = Stamped;
     }
 
-    public CTinkersMaterialHandler (int id, String name, int durability, int miningSpeed, int miningLevel, int attack, float durabilityMod, float projSpeed, int drawSpeed, float mass, float fragility, String style, int color, String oreDict, int amount, boolean Stamped, int reinforcement, int stonebound, int jaggy, float bowDurabilityModifier, float bowDrawSpeedModifier, float bowFlightSpeedModifier) {
+    public CTinkersMaterialHandler (int id, String name, int durability, int miningSpeed, int miningLevel, int attack, float handleMod, float projSpeed, int drawSpeed, float mass, float fragility, String style, int color, String oreDict, int amount, boolean Stamped, int reinforcement, int stonebound, int jaggy, float bowDurabilityModifier, float bowDrawSpeedModifier, float bowFlightSpeedModifier) {
         MaterialID = id;
         MaterialName = name;
-        LocalizationString = "material.hxctic." + name.toLowerCase();
+        LocalizationString = "material." + name.toLowerCase();
         Durability = durability;
         MiningSpeed = miningSpeed;
         HarvestLevel = miningLevel;
         AttackDamage = attack;
-        HandleDurabilityModifier = durabilityMod;
+        HandleDurabilityModifier = handleMod;
         ReinforcementLevel = reinforcement;
         StoneboundLevel = stonebound;
         JaggyLevel = jaggy;
@@ -101,7 +101,6 @@ public class CTinkersMaterialHandler {
     }
 
     public void init() {
-        //TODO: Bowstring Material Data
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("Id", MaterialID);
         tag.setString("Name", MaterialName);
