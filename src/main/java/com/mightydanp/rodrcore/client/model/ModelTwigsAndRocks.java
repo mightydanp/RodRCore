@@ -13,8 +13,8 @@ public class ModelTwigsAndRocks extends ModelBase {
 		textureHeight = 32;
 
 		block = new ModelRenderer(this, 0, 0);
-		block.addBox(0F, 0F, 0F, 16, 1, 16);
-		block.setRotationPoint(-8F, 23F, -8F);
+		block.addBox(0F, 0F, 0F, 16, 0, 16);
+		block.setRotationPoint(-8F, 23.9F, -8F);
 		block.setTextureSize(32, 32);
 		block.mirror = true;
 		setRotation(block, 0F, 0F, 0F);

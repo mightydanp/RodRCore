@@ -3,12 +3,20 @@ package com.mightydanp.rodrcore.common;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.MinecraftForge;
 
+import com.mightydanp.rodrcore.api.common.handler.CTinkersMaterialHandler;
+import com.mightydanp.rodrcore.api.common.lib.TinkersFluidRegistry;
 import com.mightydanp.rodrcore.common.block.ModBlocks;
+import com.mightydanp.rodrcore.common.handler.EventHandler;
 import com.mightydanp.rodrcore.common.handler.GuiHandler;
+import com.mightydanp.rodrcore.common.handler.RecipeHandler;
 import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.lib.*;
 import com.mightydanp.rodrcore.common.minetweaker.MineTweakerCompat;
+import com.mightydanp.rodrcore.common.tconstruct.TinkerMaterial;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityCampFire;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityNewFurnace;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityRocks;
@@ -16,6 +24,7 @@ import com.mightydanp.rodrcore.common.tileentity.TileEntityTwigs;
 import com.mightydanp.rodrcore.common.world.gen.WorldGen;
 import com.mightydanp.rodrcore.common.world.gen.feature.WorldGenTwigsAndRocks;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -59,15 +68,21 @@ public class RodRCore {
 		GameRegistry.registerTileEntity(TileEntityNewFurnace.class, EntityReference.FURNACE_NAME);
 		GameRegistry.registerTileEntity(TileEntityTwigs.class, EntityReference.TWIGS_NAME);
 		GameRegistry.registerTileEntity(TileEntityRocks.class, EntityReference.ROCKS_NAME);
+		EventHandler handler = new EventHandler();
+		MinecraftForge.EVENT_BUS.register(handler);
+		FMLCommonHandler.instance().bus().register(handler);
+		RecipeHandler.init();
 		if(Loader.isModLoaded("MineTweaker3"))
 		{
 			MineTweakerCompat.register();
 		}
 		RodRCore.proxy.init(event);
+		TinkersFluidRegistry.init();
+		TinkerMaterial.materials.values().forEach(CTinkersMaterialHandler::init);
     }
 
 	@Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event) {		
+    public void postInit(FMLPostInitializationEvent event) {
 		RodRCore.proxy.postInit(event);
     }
 }

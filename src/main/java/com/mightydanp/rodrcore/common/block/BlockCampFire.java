@@ -59,17 +59,21 @@ public class BlockCampFire extends BlockContainer {
 		return new TileEntityCampFire();
 	}
 
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX,
+			float hitY, float hitZ) {
 		TileEntityCampFire tileentityCampfire = (TileEntityCampFire) world.getTileEntity(x, y, z);
-		ItemStack getHeldItem = (ItemStack)(entityPlayer.getCurrentEquippedItem() != null ? entityPlayer.getCurrentEquippedItem(): null);
+		ItemStack getHeldItem = (ItemStack) (entityPlayer.getCurrentEquippedItem() != null
+				? entityPlayer.getCurrentEquippedItem() : null);
 		Item flintAndSteel = Items.flint_and_steel;
 		if (!world.isRemote) {
-			if (!entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() != null && getHeldItem.getItem() == flintAndSteel) {
+			if (!entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() != null
+					&& getHeldItem.getItem() == flintAndSteel) {
 				if (!world.isRaining() && !world.isThundering()) {
 					tileentityCampfire.setBurning(true);
-					if(getHeldItem.getItem() == Items.flint_and_steel && getHeldItem != null && !this.isActive){
+					if (getHeldItem.getItem() == Items.flint_and_steel && getHeldItem != null && !this.isActive) {
 						getHeldItem.setItemDamage(getHeldItem.getItemDamage() + 1);
-						world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "fire.ignite", 1.0F, random.nextFloat() * 0.4F + 0.8F);
+						world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite",
+								1.0F, random.nextFloat() * 0.4F + 0.8F);
 					}
 				}
 			}
@@ -78,10 +82,10 @@ public class BlockCampFire extends BlockContainer {
 
 		return true;
 	}
-	
-	public static void damageItemStack(ItemStack itemStack, int damage, EntityPlayer entityPlayer){
+
+	public static void damageItemStack(ItemStack itemStack, int damage, EntityPlayer entityPlayer) {
 		ItemStack item = entityPlayer.getCurrentEquippedItem().copy();
-		if(item != null){
+		if (item != null) {
 			itemStack.setItemDamage(damage);
 		}
 	}
@@ -127,13 +131,13 @@ public class BlockCampFire extends BlockContainer {
 		TileEntityCampFire tileentityCampfire = (TileEntityCampFire) world.getTileEntity(x, y, z);
 		if (this.isActive) {
 			float x1 = (float) x + 1.0F;
-			float y1 = (float) y + 0.1F +  random.nextFloat() * 6.0F / 16.0F;
+			float y1 = (float) y + 0.1F + random.nextFloat() * 6.0F / 16.0F;
 			float z1 = (float) z + 0.5F;
 			float f3 = 0.52F;
 			float f4 = random.nextFloat() * 0.6F - 0.3F;
 			world.spawnParticle("smoke", (double) (x1 - f3), (double) y1, (double) (z1 + f4), 0.0D, 0.0D, 0.0D);
 			world.spawnParticle("flame", (double) (x1 - f3), (double) y1, (double) (z1 + f4), 0.0D, 0.0D, 0.0D);
-			
+
 		}
 	}
 
@@ -149,8 +153,11 @@ public class BlockCampFire extends BlockContainer {
 
 		if (tileentityCampfire != null) {
 			if (this.isActive) {
-				entity.attackEntityFrom(DamageSource.inFire, 0.5F);
-				entity.setFire(8);
+				if (entity instanceof EntityPlayer) {
+					entity.attackEntityFrom(DamageSource.inFire, 0.5F);
+					entity.setFire(8);
+				}
+
 			}
 		}
 	}

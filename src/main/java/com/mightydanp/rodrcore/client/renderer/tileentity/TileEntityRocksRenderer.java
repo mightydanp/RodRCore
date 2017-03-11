@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class TileEntityRocksRenderer extends TileEntitySpecialRenderer {
 
 	private ModelTwigsAndRocks modelRocks;
-	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID + ":" + "textures/entity/block/" + "Rocks" + ".png");
+	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID + ":" + "textures/entity/block/" + "rocks" + ".png");
 
 	public TileEntityRocksRenderer() {
 		this.modelRocks = new ModelTwigsAndRocks();

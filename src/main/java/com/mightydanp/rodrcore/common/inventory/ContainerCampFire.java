@@ -76,9 +76,9 @@ public class ContainerCampFire extends Container {
 	public void updateProgressBar(int slot, int newValue) {
 		if (slot == 0)
 			this.tileEntityCampFire.cookTime = newValue;
-		if (slot == 1)
+		else if (slot == 1)
 			this.tileEntityCampFire.burnTime = newValue;
-		if (slot == 2)
+		else if (slot == 2)
 			this.tileEntityCampFire.currentItemBurnTime = newValue;
 	}
 
@@ -96,7 +96,7 @@ public class ContainerCampFire extends Container {
 				}
 
 				slot.onSlotChange(itemstack1, itemstack);
-			} else if ( slots != 3 && slots != 1 && slots != 0) {
+			} else if (slots != 3 && slots != 1 && slots != 0) {
 				if (FurnaceRecipes.smelting().getSmeltingResult(itemstack1) != null) {
 					if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
 						return null;

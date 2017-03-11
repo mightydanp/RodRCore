@@ -9,6 +9,7 @@ public class MineTweakerCompat
 	public static void register()
 	{
 		MineTweakerAPI.registerClass(CampFireTweaker.class);
+		MineTweakerAPI.registerClass(FurnaceTweaker.class);
 		test();
 	}
 

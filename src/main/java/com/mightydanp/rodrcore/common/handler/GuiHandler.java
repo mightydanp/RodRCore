@@ -31,8 +31,6 @@ public class GuiHandler extends CRegistryHandler implements IGuiHandler {
 				if (entity instanceof TileEntityCampFire) {
 					return new ContainerCampFire(player.inventory, (TileEntityCampFire) entity);
 				}
-			}
-			switch (ID) {
 			case GuiReference.FURNACE_GUI_ID:
 				;
 				if (entity instanceof TileEntityNewFurnace) {
@@ -54,8 +52,6 @@ public class GuiHandler extends CRegistryHandler implements IGuiHandler {
 				if (entity instanceof TileEntityCampFire) {
 					return new GuiCampFire(player.inventory, (TileEntityCampFire) entity);
 				}
-			}
-			switch (ID) {
 			case GuiReference.FURNACE_GUI_ID:
 				;
 				if (entity instanceof TileEntityNewFurnace) {

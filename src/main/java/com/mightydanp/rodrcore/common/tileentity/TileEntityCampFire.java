@@ -325,6 +325,15 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 			if (this.slots[0].stackSize <= 0) {
 				this.slots[0] = null;
 			}
+			
+			if(this.slots[4] != null){
+				int damage = slots[3].getItemDamage();
+				slots[3].setItemDamage(damage + 1);
+				if (slots[3].getItemDamage() >= slots[3].getMaxDamage())
+				{
+					slots[3] = null;
+				}
+			}
 		}
 	}
 
@@ -342,31 +351,24 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 		return getItemBurnTime(itemStack) > 0;
 	}
 
-	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-		if (slot == 2 || slot == 4) {
-			return false;
-		}
-		if (slot == 3 && isPan(itemStack) || isPot(itemStack)) {
+		if(slot == 3 && isRecipeItem(itemStack))
 			return true;
-		}
-		return slot == 1 ? isItemFuel(itemStack) : true;
+		return slot == 2 || slot == 4 ? false : (slot == 1 ? isItemFuel(itemStack) : true);
 	}
-
-	private static boolean isPan(ItemStack stack) {
-		if (stack == null) {
-			return false;
-		}
-
-		return stack.getItem() == ModItems.pan;
-	}
-
-	private static boolean isPot(ItemStack stack) {
-		if (stack == null) {
-			return false;
-		}
-
-		return stack.getItem() == ModItems.pot;
+	
+	public boolean isRecipeItem(ItemStack itemStack) {
+		if(itemStack.getItem() == ModItems.clayPan)
+			return true;
+		if(itemStack.getItem() == ModItems.clayPot)
+			return true;
+		if(itemStack.getItem() == ModItems.pan)
+			return true;
+		if(itemStack.getItem() == ModItems.pot)
+			return true;
+		if(itemStack.getItem() == ModItems.smallCrucible)
+			return true;
+		return false;
 	}
 
 	@Override

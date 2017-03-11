@@ -42,7 +42,7 @@ public class BlockTwigs extends BlockBush implements ITileEntityProvider {
 
 	public BlockTwigs(String unlocalizedName) {
 		super(Material.plants);
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
+		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0025F, 1.0F);
 		this.setBlockName(unlocalizedName);
 		this.setBlockTextureName(Reference.MODID + ":" + unlocalizedName);
 		this.setHardness(0.5F);

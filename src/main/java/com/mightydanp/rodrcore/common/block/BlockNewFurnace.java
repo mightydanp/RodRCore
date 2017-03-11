@@ -5,6 +5,7 @@ import java.util.Random;
 import com.mightydanp.rodrcore.api.common.block.CBlock;
 import com.mightydanp.rodrcore.common.RodRCore;
 import com.mightydanp.rodrcore.common.lib.GuiReference;
+import com.mightydanp.rodrcore.common.lib.Reference;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityNewFurnace;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
@@ -13,9 +14,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -94,6 +97,11 @@ public class BlockNewFurnace extends BlockContainer {
 			tileEntity.validate();
 			worldObj.setTileEntity(x, y, z, tileEntity);
 		}
+	}
+	
+	@Override
+	public Item getItemDropped(int meta, Random random, int par3) {
+		return Item.getItemFromBlock(Blocks.furnace);
 	}
 
 	public void updateTick(World world, int x, int y, int z, Random random) {
@@ -207,7 +215,7 @@ public class BlockNewFurnace extends BlockContainer {
 	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		return new ItemStack(ModBlocks.furnaceIdle, 1, 0);
+		return new ItemStack(Blocks.furnace, 1, 0);
 	}
 	
 	@Override
@@ -222,5 +230,11 @@ public class BlockNewFurnace extends BlockContainer {
 
 	public boolean renderAsNormalBlock() {
 		return false;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerBlockIcons(IIconRegister par1IconRegister) {
+		this.blockIcon = par1IconRegister.registerIcon("furnace_top");
 	}
 }
