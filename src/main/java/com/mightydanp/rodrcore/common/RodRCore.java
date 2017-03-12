@@ -79,11 +79,11 @@ public class RodRCore {
 		}
 		RodRCore.proxy.init(event);
 		TinkersFluidRegistry.init();
-		TinkerMaterial.materials.values().forEach(CTinkersMaterialHandler::init);
     }
 
 	@Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+		TinkerMaterial.materials.values().forEach(CTinkersMaterialHandler::init);
 		RodRCore.proxy.postInit(event);
     }
 }

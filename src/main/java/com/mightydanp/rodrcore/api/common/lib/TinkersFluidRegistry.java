@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.apache.commons.lang3.StringUtils;
 
 import com.mightydanp.rodrcore.api.common.block.CBlockFluid;
+import com.mightydanp.rodrcore.common.lib.Reference;
 import com.mightydanp.rodrcore.common.tconstruct.TinkerMaterial;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,7 +31,7 @@ public class TinkersFluidRegistry {
             FluidRegistry.registerFluid(fluid);
             Block lef = new CBlockFluid(fluid, TinkerMaterial.materials.get(StringUtils.capitalize(name.substring(6))).Colour).setBlockName(name);
             leFluids.putIfAbsent(name, lef);
-            GameRegistry.registerBlock(lef, "fluid_" + name);
+            GameRegistry.registerBlock(lef,"fluid_" + name);
             fluid.setUnlocalizedName(lef.getUnlocalizedName());
         });
     }

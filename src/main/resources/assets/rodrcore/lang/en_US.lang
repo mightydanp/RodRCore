@@ -16,6 +16,14 @@ item.pot.name=Pot
 item.small_crucible.name=Small Crucible
 item.rock.name=Rock
 
+material.stainlesssteel=Stainless Steel
+material.titanium=Titanium
+material.tungstensteel=Tungsten Steel
+
+fluid.tile.fluid_stainlesssteel=Molton Stainless Steel
+fluid.tile.fluid_titanium=Molton Titanium
+fluid.tile.fluid_tungstensteel=Molton Tungsten Steel
+
 
 
 container.camp_fire=Camp Fire

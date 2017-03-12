@@ -2,6 +2,7 @@ package com.mightydanp.rodrcore.api.common.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,25 +27,32 @@ public class CBlockFluid extends BlockFluidFinite {
 
     public int colour = 0xffffffff;
 
-    @Override
-    public int colorMultiplier(IBlockAccess access, int x, int y, int z) {
-        return colour;
-    }
-
     public CBlockFluid(Fluid fluid, int color) {
         super(fluid, Material.lava);
         setCreativeTab(CreativeTabs.tabMisc);
         colour = color;
     }
+    
+    @Override
+    public int colorMultiplier(IBlockAccess access, int x, int y, int z) {
+        return colour;
+    }
+    
+    @Override
+    public MapColor getMapColor(int p_149728_1_)
+    {
+        return MapColor.getMapColorForBlockColored(colour);
+    }
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return (side == 0 || side == 1)? stillIcon : flowingIcon;
-    }
+        return side != 0 && side != 1 ? stillIcon : flowingIcon;
+        }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister register) {
+    	blockIcon = register.registerIcon("rodrcore:fluidStill");
         stillIcon = register.registerIcon("rodrcore:fluidStill");
         flowingIcon = register.registerIcon("rodrcore:fluidFlowing");
     }
