@@ -17,6 +17,7 @@ public class TinkersFluidRegistry {
 
     public static HashMap<String, Fluid> fluids = new HashMap<>();
     public static HashMap<String, Block> leFluids = new HashMap<>();
+    public static Block lef;
 
     public static void preinit() {
     	TinkerMaterial.materials.keySet().forEach(mat ->
@@ -29,7 +30,7 @@ public class TinkersFluidRegistry {
             fluid.setViscosity(4);
             fluid.setDensity(3);
             FluidRegistry.registerFluid(fluid);
-            Block lef = new CBlockFluid(fluid, TinkerMaterial.materials.get(StringUtils.capitalize(name.substring(6))).Colour).setBlockName(name);
+            lef = new CBlockFluid(fluid, TinkerMaterial.materials.get(StringUtils.capitalize(name.substring(6))).Colour).setBlockName(name);
             leFluids.putIfAbsent(name, lef);
             GameRegistry.registerBlock(lef,"fluid_" + name);
             fluid.setUnlocalizedName(lef.getUnlocalizedName());

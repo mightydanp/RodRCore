@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.BlockFluidFinite;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,11 +20,13 @@ import java.util.Random;
 import com.mightydanp.rodrcore.api.common.lib.TinkersFluidRegistry;
 
 @SuppressWarnings("all")
-public class CBlockFluid extends BlockFluidFinite {
+public class CBlockFluid extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     private IIcon stillIcon;
     @SideOnly(Side.CLIENT)
     private IIcon flowingIcon;
+    @SideOnly(Side.CLIENT)
+    protected static IIcon[] icon;
 
     public int colour = 0xffffffff;
 
@@ -31,7 +34,9 @@ public class CBlockFluid extends BlockFluidFinite {
         super(fluid, Material.lava);
         setCreativeTab(CreativeTabs.tabMisc);
         colour = color;
+        System.out.println("search this" +color);
     }
+    
     
     @Override
     public int colorMultiplier(IBlockAccess access, int x, int y, int z) {
@@ -46,15 +51,19 @@ public class CBlockFluid extends BlockFluidFinite {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return side != 0 && side != 1 ? stillIcon : flowingIcon;
+        return side != 0 && side != 1 ? icon[1] : icon[0];
         }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister register) {
-    	blockIcon = register.registerIcon("rodrcore:fluidStill");
-        stillIcon = register.registerIcon("rodrcore:fluidStill");
-        flowingIcon = register.registerIcon("rodrcore:fluidFlowing");
+        this.icon = new IIcon[] {register.registerIcon("rodrcore:fluidStill"), register.registerIcon("rodrcore:fluidFlowing")};
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public static IIcon getLiquidIcon(String p_149803_0_)
+    {
+        return p_149803_0_ == "rodrcore:fluidStill" ? icon[0] : (p_149803_0_ == "rodrcore:fluidFlowing" ? icon[1] : null);
     }
 
     @Override
