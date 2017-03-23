@@ -20,9 +20,9 @@ material.stainlesssteel=Stainless Steel
 material.titanium=Titanium
 material.tungstensteel=Tungsten Steel
 
-fluid.tile.fluid_stainlesssteel=Molton Stainless Steel
-fluid.tile.fluid_titanium=Molton Titanium
-fluid.tile.fluid_tungstensteel=Molton Tungsten Steel
+fluid.fluid_stainlesssteel=Molton Stainless Steel
+fluid.fluid_titanium=Molton Titanium
+fluid.fluid_tungstensteel=Molton Tungsten Steel
 
 
 

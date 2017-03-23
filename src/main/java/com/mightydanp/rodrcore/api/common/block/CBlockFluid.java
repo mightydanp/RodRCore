@@ -6,6 +6,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -13,154 +14,133 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.BlockFluidFinite;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.HashMap;
 import java.util.Random;
 
+import com.mightydanp.rodrcore.api.common.fluid.IFluidAction;
+import com.mightydanp.rodrcore.api.common.fluid.effect.FluidEffect;
+import com.mightydanp.rodrcore.api.common.fluid.effect.FluidEffectAcid;
+import com.mightydanp.rodrcore.api.common.fluid.effect.FluidEffectAlcool;
+import com.mightydanp.rodrcore.api.common.fluid.effect.FluidEffectBiofuel;
+import com.mightydanp.rodrcore.api.common.fluid.effect.FluidEffectCold;
+import com.mightydanp.rodrcore.api.common.fluid.effect.FluidEffectHealthBoost;
+import com.mightydanp.rodrcore.api.common.fluid.effect.FluidEffectJump;
+import com.mightydanp.rodrcore.api.common.fluid.effect.FluidEffectMilk;
+import com.mightydanp.rodrcore.api.common.fluid.effect.FluidEffectPoison;
 import com.mightydanp.rodrcore.api.common.lib.TinkersFluidRegistry;
+import com.mightydanp.rodrcore.common.RodRCore;
 
 @SuppressWarnings("all")
 public class CBlockFluid extends BlockFluidClassic {
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
     private IIcon stillIcon;
     @SideOnly(Side.CLIENT)
     private IIcon flowingIcon;
+	private FluidEffect effect;
+	private String setEffect;
+	public int colour = 0xffffffff;
+	private FluidStack fluid;
+	private HashMap<String, Fluid> fluids = TinkersFluidRegistry.fluids;
+	private FluidEffect FluidEffect = new FluidEffect();
+	private FluidEffectAcid acid = new FluidEffectAcid();
+	private FluidEffectAlcool alcool = new FluidEffectAlcool();
+	private FluidEffectBiofuel biofuel= new FluidEffectBiofuel();
+	private FluidEffectCold cold= new FluidEffectCold();
+	private FluidEffectHealthBoost healthboost= new FluidEffectHealthBoost();
+	private FluidEffectJump jump= new FluidEffectJump();
+	private FluidEffectMilk milk= new FluidEffectMilk();
+	private FluidEffectPoison poison= new FluidEffectPoison();
+
+	public CBlockFluid(Fluid fluid, String blockName, String setEffect, int color) {
+		super(fluid, Material.lava);
+		setCreativeTab(CreativeTabs.tabMisc);
+		
+		this.colour = color;
+		this.setEffect = setEffect;
+		this.effect = this.getEffect();
+		
+		this.fluid = new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME);
+	}
+	
+	public FluidEffect getEffect(){
+		return setEffect == "acid" ? acid : (setEffect == "alcool" ? alcool :(setEffect == "biofuel" ? biofuel :(setEffect == "cold" ? cold : (setEffect == "healthboost" ? healthboost :(setEffect == "jump" ? jump:(setEffect == "milk" ? jump: (setEffect == "poison" ? poison: FluidEffect)))))));
+	
+	}
+	
+ 
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+		if (effect != null)
+			effect.onTouch(world, x, y, z, entity);
+	}
+
+	@Override
+	public void updateTick(World world, int x, int y, int z, Random rand) {
+		if (effect != null)
+			effect.onTick(world, x, y, z, rand);
+
+		super.updateTick(world, x, y, z, rand);
+	}
+
+	@Override
+	public IIcon getIcon(int side, int meta) {
+		if (side <= 1) {
+			return this.stillIcon;
+		}
+		return this.flowingIcon;
+	}
+	
     @SideOnly(Side.CLIENT)
-    protected static IIcon[] icon;
-
-    public int colour = 0xffffffff;
-
-    public CBlockFluid(Fluid fluid, int color) {
-        super(fluid, Material.lava);
-        setCreativeTab(CreativeTabs.tabMisc);
-        colour = color;
-        System.out.println("search this" +color);
-    }
-    
-    
     @Override
-    public int colorMultiplier(IBlockAccess access, int x, int y, int z) {
-        return colour;
-    }
-    
-    @Override
+    public void registerBlockIcons(IIconRegister register) {
+    	stillIcon = register.registerIcon("rodrcore:fluidStill");
+    	flowingIcon = register.registerIcon("rodrcore:fluidFlowing");
+    	}
+
+	@Override
+	public String getLocalizedName() {
+		return fluid.getLocalizedName();
+	}
+
+	@Override
+	public String getUnlocalizedName() {
+		return fluid.getUnlocalizedName();
+	}
+
+	@Override
+	public int getBlockColor() {
+		return colour;
+	}
+
+	@Override
+	public int getRenderColor(int p_149741_1_) {
+		return colour;
+	}
+	
+	public IIcon getFlowingIcon() {
+		return this.flowingIcon;
+	}
+	
+	public IIcon getStillIcon() {
+		return this.stillIcon;
+	}
+	
+	@Override
+	public int getRenderType() {
+		return RodRCore.liquidRender;
+	}
+	
+	@Override
     public MapColor getMapColor(int p_149728_1_)
     {
         return MapColor.getMapColorForBlockColored(colour);
     }
-
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return side != 0 && side != 1 ? icon[1] : icon[0];
-        }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerBlockIcons(IIconRegister register) {
-        this.icon = new IIcon[] {register.registerIcon("rodrcore:fluidStill"), register.registerIcon("rodrcore:fluidFlowing")};
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public static IIcon getLiquidIcon(String p_149803_0_)
-    {
-        return p_149803_0_ == "rodrcore:fluidStill" ? icon[0] : (p_149803_0_ == "rodrcore:fluidFlowing" ? icon[1] : null);
-    }
-
-    @Override
-    public boolean canDisplace(IBlockAccess world, int x, int y, int z) {
-        return !world.getBlock(x, y, z).getMaterial().isLiquid() && super.canDisplace(world, x, y, z);
-    }
-
-    @Override
-    public boolean displaceIfPossible(World world, int x, int y, int z) {
-        return !world.getBlock(x, y, z).getMaterial().isLiquid() && super.displaceIfPossible(world, x, y, z);
-    }
-
-    @Override
-    public int getQuantaValue(IBlockAccess world, int x, int y, int z) {
-        if (world.getBlock(x, y, z) == Blocks.air)
-            return 0;
-
-        if (world.getBlock(x, y, z) != this)
-            return -1;
-
-        return quantaPerBlock - world.getBlockMetadata(x, y, z);
-    }
-
-    @Override
-    public boolean canCollideCheck(int meta, boolean fullHit) {
-        return fullHit && meta == quantaPerBlock - 1;
-    }
-
-    @Override
-    public int getMaxRenderHeightMeta() {
-        return quantaPerBlock + 1;
-    }
-
-    public boolean isValid(World world, int x, int y, int z, int meta) {
-        if (world.getBlock(x + 1, y, z) == this && world.getBlockMetadata(x + 1, y, z) == meta - 1) {
-            return true;
-        }
-        if (world.getBlock(x - 1, y, z) == this && world.getBlockMetadata(x - 1, y, z) == meta - 1) {
-            return true;
-        }
-        if (world.getBlock(x, y, z + 1) == this && world.getBlockMetadata(x, y, z + 1) == meta - 1) {
-            return true;
-        }
-        if (world.getBlock(x, y, z - 1) == this && world.getBlockMetadata(x, y, z - 1) == meta - 1) {
-            return true;
-        }
-        if (world.getBlock(x, y + 1, z) == this) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void updateTick(World world, int x, int y, int z, Random rand) {
-        int meta = world.getBlockMetadata(x, y, z);
-
-        if (meta > 8) {
-            world.setBlockToAir(x, y, z);
-        }
-        //fluid evaporation
-        if (meta != 0 && !isValid(world, x, y, z, meta)) {
-            if (meta + 1 >= 8)
-                world.setBlock(x, y, z, Blocks.air, 0, 3);
-            else world.setBlockMetadataWithNotify(x, y, z, meta + 1, 3);
-            return;
-        }
-
-        if (meta != 8 && world.getBlock(x + 1, y, z) == Blocks.air) {
-            world.setBlock(x + 1, y, z, this, meta + 1, 2);
-        }
-
-        if (meta != 8 && world.getBlock(x - 1, y, z) == Blocks.air) {
-            world.setBlock(x - 1, y, z, this, meta + 1, 2);
-        }
-
-        if (meta != 8 && world.getBlock(x, y, z + 1) == Blocks.air) {
-            world.setBlock(x, y, z + 1, this, meta + 1, 2);
-        }
-
-        if (meta != 8 && world.getBlock(x, y, z - 1) == Blocks.air) {
-            world.setBlock(x, y, z - 1, this, meta + 1, 2);
-        }
-
-        if (world.getBlock(x, y - 1, z) == Blocks.air) {
-            world.setBlock(x, y - 1, z, this, meta, 3);
-            if (meta >= 8) world.setBlockToAir(x, y, z);
-            else world.setBlockMetadataWithNotify(x, y, z, meta + 1, 3);
-        }
-    }
-
-    @Override
-    public FluidStack drain(World world, int x, int y, int z, boolean doDrain) {
-        return doDrain ? new FluidStack(TinkersFluidRegistry.fluids.get(getUnlocalizedName().substring(5)), 1000) : null;
-    }
-
-    @Override
-    public boolean canDrain(World world, int x, int y, int z) {
-        return true;
+	
+	@Override
+    public int colorMultiplier(IBlockAccess access, int x, int y, int z) {
+        return colour;
     }
 }

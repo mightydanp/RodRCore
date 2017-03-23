@@ -49,6 +49,8 @@ public class RodRCore {
 				return ModItems.rock;
 	        }
 	    };
+
+	public static int liquidRender;
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
