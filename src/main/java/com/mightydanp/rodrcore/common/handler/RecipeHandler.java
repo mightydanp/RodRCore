@@ -1,30 +1,38 @@
 package com.mightydanp.rodrcore.common.handler;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import com.mightydanp.rodrcore.api.common.handler.CRecipeHandler;
+import com.mightydanp.rodrcore.api.common.handler.OreRecipeElement;
 import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfirePotRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfireSmallCrucibleRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnacePanRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnacePotRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnaceSmallCrucibleRecipes;
 import com.mightydanp.rodrcore.common.lib.ItemReference;
+import com.mightydanp.rodrcore.common.tileentity.TileEntityNewFurnace;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeHandler extends CRecipeHandler{
 	
 	private static ItemFishFood.FishType[] aFishType = ItemFishFood.FishType.values();
 	private static int aFishLength = aFishType.length;
+	static TileEntityNewFurnace furnace;
 	
 	public static void init() {
 		craftingRecipes();
 		furnaceRecipes();
 		campfireRecipes();
-		newFurnaceRecipes();
 	}
 
 	private static void craftingRecipes() {
@@ -51,32 +59,38 @@ public class RecipeHandler extends CRecipeHandler{
     	registerCampfireRecipe(Blocks.sand, 0, Blocks.glass, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
     	registerCampfireRecipe(Blocks.sand, 1, Blocks.glass, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
     }
-	
-	private static void newFurnaceRecipes() {
-		registerNewFurnaceRecipe(Items.porkchop, 0, Items.cooked_porkchop, 0, 1, 0.35F, ItemReference.PAN_NAME);
-		registerNewFurnaceRecipe(Items.beef, 0,Items.cooked_beef, 0, 1, 0.35F, ItemReference.PAN_NAME);
-		registerNewFurnaceRecipe(Items.chicken, 0,Items.cooked_chicken, 0, 1, 0.35F, ItemReference.PAN_NAME);
+    	/*(Set<Map.Entry<ItemStack, ItemStack>> set = FurnaceRecipes.smelting().getSmeltingList().entrySet();
     	
-    	for (int j = 0; j < aFishLength; ++j){
-            ItemFishFood.FishType fishtype = aFishType[j];
+    	for(Map.Entry<ItemStack, ItemStack> obj: set) {
+    		ItemStack input = (ItemStack)obj.getKey();
+    	    ItemStack output = (ItemStack) obj.getValue();
+    	    
+    	    List<String> input_names = findAllOreNames(input);
+    	    List<String> output_names = findAllOreNames(output);
+    	    
+    	    System.out.println(input_names);
+    	    
+    	    
+    	    for (String element : input_names) {
+    	    	System.out.println(element);
+    	    	if(element.startsWith("ore")){
+    	    		registerNewFurnaceRecipe(input.getItem(), 0, output.getItem(), 0, 1, 0.0F, "");
+    	    	}
+    	    }
+    	}
+    	
+    	registerNewFurnaceRecipe("", 0, "", 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
+    	
 
-            if (fishtype.func_150973_i())
-            	registerNewFurnaceRecipe(Items.fish, fishtype.func_150976_a(), Items.cooked_fished, 1, fishtype.func_150976_a(), 0.35F, ItemReference.PAN_NAME);
-        }
-    	
-    	registerNewFurnaceRecipe(Items.potato, 0, Items.baked_potato, 0, 1, 0.35F, ItemReference.POT_NAME);
-    	registerNewFurnaceRecipe(ModItems.unfiredClayPan, 0, ModItems.clayPan, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(ModItems.unfiredClayPot, 0, ModItems.clayPot, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(Blocks.sand, 0, Blocks.glass, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(Blocks.sand, 1, Blocks.glass, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(Blocks.coal_ore, 0, Items.coal, 0, 1, 0.1F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(Blocks.redstone_ore, 0,Items.redstone, 0, 1, 0.7F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(Blocks.lapis_ore, 0, Items.dye, 4, 1, 0.2F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(Blocks.quartz_ore, 0, Items.quartz, 0, 1, 0.2F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(Blocks.iron_ore, 0, Items.iron_ingot, 0, 1, 0.7F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(Blocks.gold_ore, 0, Items.gold_ingot, 0, 1, 1.0F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerNewFurnaceRecipe(Blocks.diamond_ore, 0, Items.diamond, 0, 1, 1.0F, ItemReference.SMALLCRUCIBLE_NAME);
-		
+	private static List<String> findAllOreNames(ItemStack input) {
+		int[] ids = OreDictionary.getOreIDs(input);
+		ArrayList<String> results = new ArrayList<String>();
+		for(int id : ids){
+			String name = OreDictionary.getOreName(id);
+			results.add(name);
+		}
+		return results;
 	}
+	*/
  
 }

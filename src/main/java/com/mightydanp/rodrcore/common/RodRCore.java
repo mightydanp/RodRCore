@@ -74,7 +74,6 @@ public class RodRCore {
 		EventHandler handler = new EventHandler();
 		MinecraftForge.EVENT_BUS.register(handler);
 		FMLCommonHandler.instance().bus().register(handler);
-		RecipeHandler.init();
 		if(Loader.isModLoaded("MineTweaker3"))
 		{
 			MineTweakerCompat.register();
@@ -86,6 +85,7 @@ public class RodRCore {
 	@Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 		TinkerMaterial.materials.values().forEach(CTinkersMaterialHandler::init);
+		RecipeHandler.init();
 		RodRCore.proxy.postInit(event);
     }
 }

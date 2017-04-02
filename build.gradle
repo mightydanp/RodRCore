@@ -27,8 +27,8 @@ version = "${config.version}"
 group= "com.mightydanp.rodrcore"
 archivesBaseName = "RodRCore"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"

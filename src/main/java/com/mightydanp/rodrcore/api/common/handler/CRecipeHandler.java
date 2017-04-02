@@ -6,10 +6,6 @@ import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfirePotRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfireRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfireSmallCrucibleRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnacePanRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnacePotRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnaceRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnaceSmallCrucibleRecipes;
 import com.mightydanp.rodrcore.common.lib.ItemReference;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -136,104 +132,4 @@ public class CRecipeHandler {
 			}
 		}
 	}
-		
-		public static void registerNewFurnaceRecipe(Object objectIn, int metaIn, Object objectOut, int metaOut, int amountOut, float experience, @Nullable String type) {
-			if (objectIn instanceof Item) {
-				if (objectOut instanceof Item) {
-					if (type == "")
-						FurnaceRecipes.addRecipe(new ItemStack((Item) objectIn, 1, metaIn),
-								new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.PAN_NAME)
-						FurnacePanRecipes.addRecipe(new ItemStack((Item) objectIn, 1, metaIn),
-								new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.POT_NAME)
-						FurnacePotRecipes.addRecipe(new ItemStack((Item) objectIn, 1, metaIn),
-								new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.SMALLCRUCIBLE_NAME)
-						FurnaceSmallCrucibleRecipes.addRecipe(new ItemStack((Item) objectIn, 1, metaIn),
-								new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-				}
-
-				if (objectOut instanceof Block) {
-					if (type == "")
-						FurnaceRecipes.addRecipe(new ItemStack((Item) objectIn, 1, metaIn),
-								new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.PAN_NAME)
-						FurnacePanRecipes.addRecipe(new ItemStack((Item) objectIn, 1, metaIn),
-								new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.POT_NAME)
-						FurnacePotRecipes.addRecipe(new ItemStack((Item) objectIn, 1, metaIn),
-								new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.SMALLCRUCIBLE_NAME)
-						FurnaceSmallCrucibleRecipes.addRecipe(new ItemStack((Item) objectIn, 1, metaIn),
-								new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-				}
-
-			}
-
-			if (objectIn instanceof Block) {
-				if (objectOut instanceof Item) {
-					if (type == "")
-						FurnaceRecipes.addRecipe(new ItemStack((Block) objectIn, 1, metaIn),
-								new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.PAN_NAME)
-						FurnacePanRecipes.addRecipe(new ItemStack((Block) objectIn, 1, metaIn),
-								new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.POT_NAME)
-						FurnacePotRecipes.addRecipe(new ItemStack((Block) objectIn, 1, metaIn),
-								new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.SMALLCRUCIBLE_NAME)
-						FurnaceSmallCrucibleRecipes.addRecipe(new ItemStack((Block) objectIn, 1, metaIn),
-								new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-				}
-
-				if (objectOut instanceof Block) {
-					if (type == "")
-						FurnaceRecipes.addRecipe(new ItemStack((Block) objectIn, 1, metaIn),
-								new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.PAN_NAME)
-						FurnacePanRecipes.addRecipe(new ItemStack((Block) objectIn, 1, metaIn),
-								new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.POT_NAME)
-						FurnacePotRecipes.addRecipe(new ItemStack((Block) objectIn, 1, metaIn),
-								new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-					if (type == ItemReference.SMALLCRUCIBLE_NAME)
-						FurnaceSmallCrucibleRecipes.addRecipe(new ItemStack((Block) objectIn, 1, metaIn),
-								new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-				}
-
-				if (objectIn instanceof String) {
-					if (objectOut instanceof Item) {
-						if (type == "")
-							FurnaceRecipes.addRecipe((String) objectIn,
-									new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-						if (type == ItemReference.PAN_NAME)
-							FurnacePanRecipes.addRecipe((String) objectIn,
-									new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-						if (type == ItemReference.POT_NAME)
-							FurnacePotRecipes.addRecipe((String) objectIn,
-									new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-						if (type == ItemReference.SMALLCRUCIBLE_NAME)
-							FurnaceSmallCrucibleRecipes.addRecipe((String) objectIn,
-									new ItemStack((Item) objectOut, amountOut, metaOut), experience);
-					}
-
-					if (objectOut instanceof Block) {
-						if (type == "")
-							FurnaceRecipes.addRecipe((String) objectIn,
-									new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-						if (type == ItemReference.PAN_NAME)
-							FurnacePanRecipes.addRecipe((String) objectIn,
-									new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-						if (type == ItemReference.POT_NAME)
-							FurnacePotRecipes.addRecipe((String) objectIn,
-									new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-						if (type == ItemReference.SMALLCRUCIBLE_NAME)
-							FurnaceSmallCrucibleRecipes.addRecipe((String) objectIn,
-									new ItemStack((Block) objectOut, amountOut, metaOut), experience);
-					}
-				}
-			}
-	}
-
 }

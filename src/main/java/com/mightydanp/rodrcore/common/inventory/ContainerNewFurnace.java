@@ -26,8 +26,7 @@ public class ContainerNewFurnace extends Container {
 		this.addSlotToContainer(new Slot(tileEntityFurnace, 0, 56, 17));
 		this.addSlotToContainer(new Slot(tileEntityFurnace, 1, 56, 53));
 		this.addSlotToContainer(new SlotFurnace(inventoryPlayer.player, tileEntityFurnace, 2, 116, 21));
-		this.addSlotToContainer(new SlotFurnaceItemNeeded(tileEntityFurnace, 3, 30, 35));
-		this.addSlotToContainer(new SlotEmpty(tileEntityFurnace, 4, 116, 53));
+		this.addSlotToContainer(new SlotEmpty(tileEntityFurnace, 3, 116, 53));
 
 		// player Inventory
 		for (int i = 0; i < 3; i++) {
@@ -91,12 +90,12 @@ public class ContainerNewFurnace extends Container {
 			itemstack = itemstack1.copy();
 
 			if (slots == 2) {
-				if (!this.mergeItemStack(itemstack1, 5, 39, true)) {
+				if (!this.mergeItemStack(itemstack1, 4, 39, true)) {
 					return null;
 				}
 
 				slot.onSlotChange(itemstack1, itemstack);
-			} else if ( slots != 3 && slots != 1 && slots != 0) {
+			} else if (slots != 1 && slots != 0) {
 				if (FurnaceRecipes.smelting().getSmeltingResult(itemstack1) != null) {
 					if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
 						return null;
@@ -105,14 +104,14 @@ public class ContainerNewFurnace extends Container {
 					if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
 						return null;
 					}
-				} else if (slots >= 5 && slots < 30) {
+				} else if (slots >= 4 && slots < 30) {
 					if (!this.mergeItemStack(itemstack1, 30, 39, false)) {
 						return null;
 					}
-				} else if (slots >= 30 && slots < 39 && !this.mergeItemStack(itemstack1, 5, 30, false)) {
+				} else if (slots >= 30 && slots < 39 && !this.mergeItemStack(itemstack1, 4, 30, false)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(itemstack1, 5, 39, false)) {
+			} else if (!this.mergeItemStack(itemstack1, 4, 39, false)) {
 				return null;
 			}
 

@@ -8,17 +8,17 @@ import net.minecraftforge.fluids.Fluid;
 public class CFluid extends Fluid{
 	private int colour = 0xffffffff;
 
-	public CFluid(String fluidName, int hex) {
+	public CFluid(String fluidName) {
 		super(fluidName);
-		this.colour = hex;
-		this.setFlowingIcon(Blocks.flowing_lava.getIcon(0, 0));
-		this.setStillIcon(Blocks.lava.getIcon(0, 0));
 	}
 	
 	@Override
-    public int getColor()
-    {
-        return colour;
+    public int getColor(){
+        return setColor(colour);
     }
+
+	public int setColor(int color) {
+		return color;
+	}
 
 }

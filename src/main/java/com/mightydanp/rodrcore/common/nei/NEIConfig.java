@@ -20,11 +20,6 @@ public class NEIConfig implements IConfigureNEI
 		API.registerUsageHandler(campfireRecipeHandler);
 		
 		API.hideItem(new ItemStack(ModBlocks.campFireActive));
-
-		NEIFurnaceRecipeHandler furnaceRecipeHandler = new NEIFurnaceRecipeHandler();
-		API.registerRecipeHandler(furnaceRecipeHandler);
-		API.registerUsageHandler(furnaceRecipeHandler);
-		
 		API.hideItem(new ItemStack(ModBlocks.furnaceActive));
 		API.hideItem(new ItemStack(ModBlocks.furnaceIdle));
 	}

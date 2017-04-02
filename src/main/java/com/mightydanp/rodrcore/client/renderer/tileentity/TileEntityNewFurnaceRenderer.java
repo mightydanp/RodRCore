@@ -142,32 +142,6 @@ public class TileEntityNewFurnaceRenderer extends TileEntitySpecialRenderer {
 				RenderManager.instance.renderEntityWithPosYaw(cookingItem, 0.0, 0.0, 0.0, 0.0f, 0.0f);
 				GL11.glPopMatrix();
 			}
-			if (tileEntity.getStackInSlot(3) != null) {
-				GL11.glPushMatrix();
-				GL11.glTranslatef((float) 0.30f, (float) 0.25f, (float) 0.0f);
-				if (tileMeta == 2) {
-					GL11.glTranslatef((float) -0.1875f, (float) 0.0f, (float) 0.0f);
-				}
-				if (tileMeta == 3) {
-					GL11.glTranslatef((float) 0.1875f, (float) 0.0f, (float) 0.0f);
-					GL11.glRotatef((float) 180.0f, (float) 0.0f, (float) 1.0f, (float) 0.0f);
-				}
-				if (tileMeta == 4) {
-					GL11.glTranslatef((float) 0.0f, (float) 0.0f, (float) 0.1875f);
-					GL11.glRotatef((float) 90.0f, (float) 0.0f, (float) 1.0f, (float) 0.0f);
-				}
-				if (tileMeta == 5) {
-					GL11.glTranslatef((float) 0.0f, (float) 0.0f, (float) -0.1875f);
-					GL11.glRotatef((float) 270.0f, (float) 0.0f, (float) 1.0f, (float) 0.0f);
-				}
-				GL11.glScalef((float) (blockScale * 1.1f), (float) (blockScale * 1.1f), (float) (blockScale * 1.1f));
-				cookingItem.setEntityItemStack(tileEntity.getStackInSlot(3));
-				if (Block.getBlockFromItem((Item) tileEntity.getStackInSlot(3).getItem()).renderAsNormalBlock()) {
-					GL11.glTranslatef((float) 0.0f, (float) 0.125f, (float) 0.0f);
-				}
-				RenderManager.instance.renderEntityWithPosYaw(cookingItem, 0.0, 0.0, 0.0, 0.0f, 0.0f);
-				GL11.glPopMatrix();
-			}
 			GL11.glPopMatrix();
 			GL11.glColor4f((float) 1.0f, (float) 1.0f, (float) 1.0f, (float) 1.0f);
 		}

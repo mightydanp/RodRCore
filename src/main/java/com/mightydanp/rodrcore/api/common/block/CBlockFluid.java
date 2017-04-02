@@ -39,11 +39,15 @@ public class CBlockFluid extends BlockFluidClassic {
     private IIcon stillIcon;
     @SideOnly(Side.CLIENT)
     private IIcon flowingIcon;
+	@SideOnly(Side.CLIENT)
+    private IIcon fluidStillIcon;
+    @SideOnly(Side.CLIENT)
+    private IIcon fluidFlowingIcon;
 	private FluidEffect effect;
 	private String setEffect;
 	public int colour = 0xffffffff;
 	private FluidStack fluid;
-	private HashMap<String, Fluid> fluids = TinkersFluidRegistry.fluids;
+	private String fluidName;
 	private FluidEffect FluidEffect = new FluidEffect();
 	private FluidEffectAcid acid = new FluidEffectAcid();
 	private FluidEffectAlcool alcool = new FluidEffectAlcool();
@@ -61,8 +65,10 @@ public class CBlockFluid extends BlockFluidClassic {
 		this.colour = color;
 		this.setEffect = setEffect;
 		this.effect = this.getEffect();
+		this.fluidName = blockName;
 		
 		this.fluid = new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME);
+		fluid.getColor(this.fluid);
 	}
 	
 	public FluidEffect getEffect(){
@@ -93,11 +99,13 @@ public class CBlockFluid extends BlockFluidClassic {
 		return this.flowingIcon;
 	}
 	
-    @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister register) {
     	stillIcon = register.registerIcon("rodrcore:fluidStill");
     	flowingIcon = register.registerIcon("rodrcore:fluidFlowing");
+    	fluidStillIcon = register.registerIcon("rodrcore:"+ fluidName + "_still");
+    	fluidFlowingIcon = register.registerIcon("rodrcore:"+ fluidName + "_flowing");
+    	fluid.fluid.setIcons(fluidStillIcon, fluidFlowingIcon);
     	}
 
 	@Override

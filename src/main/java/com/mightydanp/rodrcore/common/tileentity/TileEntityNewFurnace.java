@@ -9,10 +9,6 @@ import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfirePotRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfireRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfireSmallCrucibleRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnacePanRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnacePotRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnaceRecipes;
-import com.mightydanp.rodrcore.common.item.crafting.FurnaceSmallCrucibleRecipes;
 import com.mightydanp.rodrcore.common.lib.GuiReference;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -31,6 +27,7 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -184,6 +181,14 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 		}
 		this.markDirty();
 	}
+	
+	public ItemStack getInputSlot(){
+		return slots[0];
+	}
+	
+	public ItemStack getOutputSlot(){
+		return slots[2];
+	}
 
 	public int getInventoryStackLimit() {
 		return 64;
@@ -207,11 +212,11 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 			ItemStack itemStackAsh = new ItemStack(ModItems.ash);
 			int i = random.nextInt((200 - 0) + 1) + 0;
 			if (i == random.nextInt((200 - 0) + 1) + 0) {
-				if (this.slots[4] == null) {
-					this.slots[4] = itemStackAsh.copy();
-				} else if (this.slots[4].isItemEqual(itemStackAsh)
-						&& this.slots[4].stackSize <= getInventoryStackLimit()) {
-					this.slots[4].stackSize += itemStackAsh.stackSize;
+				if (this.slots[3] == null) {
+					this.slots[3] = itemStackAsh.copy();
+				} else if (this.slots[3].isItemEqual(itemStackAsh)
+						&& this.slots[3].stackSize <= getInventoryStackLimit()) {
+					this.slots[3].stackSize += itemStackAsh.stackSize;
 				}
 			}
 		} else {
@@ -274,18 +279,7 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 			return false;
 		} else {
 			ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
-
-			if (this.slots[3] != null) {
-				if (this.slots[3].getItem() == ModItems.smallCrucible) {
-					itemStack = FurnaceSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
-				}
-				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clayPan) {
-					itemStack = FurnacePanRecipes.smelting().getSmeltingResult(this.slots[0]);
-				}
-				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clayPot) {
-					itemStack = FurnacePotRecipes.smelting().getSmeltingResult(this.slots[0]);
-				}
-			}
+			
 			if (itemStack == null) {
 				this.furnaceCookTime = 0;
 				return false;
@@ -303,18 +297,6 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 		if (this.canSmelt() && isLit && this.slots[0] != null) {
 			ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
 
-			if (this.slots[3] != null) {
-				if (this.slots[3].getItem() == ModItems.smallCrucible) {
-					itemStack = FurnaceSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
-				}
-				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clayPan) {
-					itemStack = FurnacePanRecipes.smelting().getSmeltingResult(this.slots[0]);
-				}
-				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clayPot) {
-					itemStack = FurnacePotRecipes.smelting().getSmeltingResult(this.slots[0]);
-				}
-			}
-
 			if (this.slots[2] == null) {
 				this.slots[2] = itemStack.copy();
 			} else if (this.slots[2].getItem() == itemStack.getItem()) {
@@ -325,15 +307,6 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 
 			if (this.slots[0].stackSize <= 0) {
 				this.slots[0] = null;
-			}
-			
-			if(this.slots[4] != null){
-				int damage = slots[3].getItemDamage();
-				slots[3].setItemDamage(damage + 1);
-				if (slots[3].getItemDamage() >= slots[3].getMaxDamage())
-				{
-					slots[3] = null;
-				}
 			}
 		}
 	}
@@ -370,23 +343,7 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 	}
 
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-		if(slot == 3 && isRecipeItem())
-			return true;
-		return slot == 2 || slot == 4? false : (slot == 1 ? isItemFuel(itemStack) : true);
-	}
-	
-	public boolean isRecipeItem() {
-		if(slots[3].getItem() == ModItems.clayPan)
-			return true;
-		if(slots[3].getItem() == ModItems.clayPot)
-			return true;
-		if(slots[3].getItem() == ModItems.pan)
-			return true;
-		if(slots[3].getItem() == ModItems.pot)
-			return true;
-		if(slots[3].getItem() == ModItems.smallCrucible)
-			return true;
-		return false;
+		return slot == 2 || slot == 3? false : (slot == 1 ? isItemFuel(itemStack) : true);
 	}
 	
 
