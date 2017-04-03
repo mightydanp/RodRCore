@@ -56,7 +56,7 @@ public class TileEntityNewFurnaceRenderer extends TileEntitySpecialRenderer {
 			rotation = 180;
 		}
 
-		if (tileEntity.getTemperature() > 200) {
+		if (tileEntity.canSmelt()) {
 			this.bindTexture(texture_lit);
 		} else {
 			this.bindTexture(texture);

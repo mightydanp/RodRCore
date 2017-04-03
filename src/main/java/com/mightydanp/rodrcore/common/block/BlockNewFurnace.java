@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.mightydanp.rodrcore.api.common.block.CBlock;
 import com.mightydanp.rodrcore.common.RodRCore;
+import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.lib.GuiReference;
 import com.mightydanp.rodrcore.common.lib.Reference;
 import com.mightydanp.rodrcore.common.tileentity.TileEntityNewFurnace;
@@ -49,18 +50,34 @@ public class BlockNewFurnace extends BlockContainer {
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
 		return new TileEntityNewFurnace();
 	}
-	
+
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
 		TileEntityNewFurnace TileEntityNewFurnace = (TileEntityNewFurnace) world.getTileEntity(x, y, z);
-		ItemStack getHeldItem = (ItemStack)(entityPlayer.getCurrentEquippedItem() != null ? entityPlayer.getCurrentEquippedItem(): null);
+		ItemStack getHeldItem = (ItemStack) (entityPlayer.getCurrentEquippedItem() != null ? entityPlayer.getCurrentEquippedItem() : null);
 		Item flintAndSteel = Items.flint_and_steel;
+		Item flintAndStone = ModItems.flint_and_stone;
 		if (!world.isRemote) {
 			if (!entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() != null && getHeldItem.getItem() == flintAndSteel) {
 				if (!world.isRaining() && !world.isThundering()) {
 					TileEntityNewFurnace.setLit(true);
-					if(getHeldItem.getItem() == Items.flint_and_steel && getHeldItem != null && !this.isActive){
+					if (!this.isActive) {
 						getHeldItem.setItemDamage(getHeldItem.getItemDamage() + 1);
-						world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "fire.ignite", 1.0F, random.nextFloat() * 0.4F + 0.8F);
+						world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 1.0F, random.nextFloat() * 0.4F + 0.8F);
+						if (getHeldItem.getItemDamage() == getHeldItem.getMaxDamage()) {
+							--getHeldItem.stackSize;
+						}
+					}
+				}
+			}
+			if (!entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() != null && getHeldItem.getItem() == flintAndStone) {
+				if (!world.isRaining() && !world.isThundering()) {
+					TileEntityNewFurnace.setLit(true);
+					if (!this.isActive) {
+						getHeldItem.setItemDamage(getHeldItem.getItemDamage() + 1);
+						world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 1.0F, random.nextFloat() * 0.4F + 0.8F);
+						if (getHeldItem.getItemDamage() == getHeldItem.getMaxDamage()) {
+							--getHeldItem.stackSize;
+						}
 					}
 				}
 			}
@@ -69,10 +86,10 @@ public class BlockNewFurnace extends BlockContainer {
 
 		return true;
 	}
-	
-	public static void damageItemStack(ItemStack itemStack, int damage, EntityPlayer entityPlayer){
+
+	public static void damageItemStack(ItemStack itemStack, int damage, EntityPlayer entityPlayer) {
 		ItemStack item = entityPlayer.getCurrentEquippedItem().copy();
-		if(item != null){
+		if (item != null) {
 			itemStack.setItemDamage(damage);
 		}
 	}
@@ -98,7 +115,7 @@ public class BlockNewFurnace extends BlockContainer {
 			worldObj.setTileEntity(x, y, z, tileEntity);
 		}
 	}
-	
+
 	@Override
 	public Item getItemDropped(int meta, Random random, int par3) {
 		return Item.getItemFromBlock(Blocks.furnace);
@@ -123,16 +140,16 @@ public class BlockNewFurnace extends BlockContainer {
 		TileEntityNewFurnace TileEntityNewFurnace = (TileEntityNewFurnace) world.getTileEntity(x, y, z);
 		if (this.isActive) {
 			float x1 = (float) x + 1.0F;
-			float y1 = (float) y + 0.1F +  random.nextFloat() * 6.0F / 16.0F;
+			float y1 = (float) y + 0.1F + random.nextFloat() * 6.0F / 16.0F;
 			float z1 = (float) z + 0.5F;
 			float f3 = 0.52F;
 			float f4 = random.nextFloat() * 0.6F - 0.3F;
 			world.spawnParticle("smoke", (double) (x1 - f3), (double) y1, (double) (z1 + f4), 0.0D, 0.0D, 0.0D);
 			world.spawnParticle("flame", (double) (x1 - f3), (double) y1, (double) (z1 + f4), 0.0D, 0.0D, 0.0D);
-			
+
 		}
 	}
-	
+
 	public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int p_149749_6_) {
 		if (!keepInventory) {
 			TileEntityNewFurnace TileEntityNewFurnace = (TileEntityNewFurnace) world.getTileEntity(x, y, z);
@@ -154,13 +171,10 @@ public class BlockNewFurnace extends BlockContainer {
 							}
 
 							itemstack.stackSize -= j1;
-							EntityItem entityitem = new EntityItem(world, (double) ((float) x + f),
-									(double) ((float) y + f1), (double) ((float) z + f2),
-									new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+							EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
 							if (itemstack.hasTagCompound()) {
-								entityitem.getEntityItem()
-										.setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
+								entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
 							}
 
 							float f3 = 0.05F;
@@ -178,9 +192,8 @@ public class BlockNewFurnace extends BlockContainer {
 
 		super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
 	}
-	
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase,
-			ItemStack itemStack) {
+
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase, ItemStack itemStack) {
 		int l = MathHelper.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
 		if (l == 0) {
@@ -212,12 +225,11 @@ public class BlockNewFurnace extends BlockContainer {
 		return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
 	}
 
-	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
 		return new ItemStack(Blocks.furnace, 1, 0);
 	}
-	
+
 	@Override
 	public int getRenderType() {
 		return -1;
@@ -231,7 +243,7 @@ public class BlockNewFurnace extends BlockContainer {
 	public boolean renderAsNormalBlock() {
 		return false;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister) {

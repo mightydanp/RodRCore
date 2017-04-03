@@ -49,7 +49,7 @@ public class NEICampfireRecipeHandler extends TemplateRecipeHandler
 			}
 			if(neededItem == "small_crucible")
 			{
-				smallCrucible = new PositionedStack(new ItemStack(ModItems.smallCrucible), 25, 24);
+				smallCrucible = new PositionedStack(new ItemStack(ModItems.small_crucible), 25, 24);
 			}
 		}
 

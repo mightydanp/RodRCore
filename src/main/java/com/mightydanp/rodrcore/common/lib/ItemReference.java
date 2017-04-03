@@ -12,5 +12,6 @@ public class ItemReference {
 	public static final String POT_NAME = "pot";
 	public static final String SMALLCRUCIBLE_NAME = "small_crucible";
 	public static final String ROCK_NAME = "rock";
+	public static final String FLINTANDSTONE_NAME = "flint_and_stone";
 
 }

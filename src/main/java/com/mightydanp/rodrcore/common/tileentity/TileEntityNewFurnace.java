@@ -1,6 +1,7 @@
 package com.mightydanp.rodrcore.common.tileentity;
 
 import java.awt.print.Printable;
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.mightydanp.rodrcore.common.block.BlockNewFurnace;
@@ -14,6 +15,9 @@ import com.mightydanp.rodrcore.common.lib.GuiReference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
@@ -33,6 +37,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class TileEntityNewFurnace extends TileEntity implements ISidedInventory {
 	private static final int[] slotsTop = new int[] { 0, 3 };
@@ -208,15 +213,15 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 
 		if (this.furnaceBurnTime > 0) {
 			--this.furnaceBurnTime;
-
-			ItemStack itemStackAsh = new ItemStack(ModItems.ash);
-			int i = random.nextInt((200 - 0) + 1) + 0;
-			if (i == random.nextInt((200 - 0) + 1) + 0) {
+			ItemStack ash = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1);
+			
+			int i = random.nextInt((224 - 0) + 1) + 0;
+			if (i == random.nextInt((224 - 0) + 1) + 0) {
 				if (this.slots[3] == null) {
-					this.slots[3] = itemStackAsh.copy();
-				} else if (this.slots[3].isItemEqual(itemStackAsh)
+					this.slots[3] = ash.copy();
+				} else if (this.slots[3].isItemEqual(ash)
 						&& this.slots[3].stackSize <= getInventoryStackLimit()) {
-					this.slots[3].stackSize += itemStackAsh.stackSize;
+					this.slots[3].stackSize += ash.stackSize;
 				}
 			}
 		} else {
@@ -252,6 +257,8 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 					}
 				}
 			}
+			
+			System.out.println(this.temperature);
 
 			if (this.isBurning() && this.canSmelt() && isLit && this.temperature >= 200) {
 				++this.furnaceCookTime;

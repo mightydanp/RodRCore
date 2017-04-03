@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.mightydanp.rodrcore.api.common.block.CBlock;
 import com.mightydanp.rodrcore.common.RodRCore;
+import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.lib.BlockReference;
 import com.mightydanp.rodrcore.common.lib.GuiReference;
 import com.mightydanp.rodrcore.common.lib.Reference;
@@ -59,21 +60,33 @@ public class BlockCampFire extends BlockContainer {
 		return new TileEntityCampFire();
 	}
 
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX,
-			float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
 		TileEntityCampFire tileentityCampfire = (TileEntityCampFire) world.getTileEntity(x, y, z);
-		ItemStack getHeldItem = (ItemStack) (entityPlayer.getCurrentEquippedItem() != null
-				? entityPlayer.getCurrentEquippedItem() : null);
+		ItemStack getHeldItem = (ItemStack) (entityPlayer.getCurrentEquippedItem() != null ? entityPlayer.getCurrentEquippedItem() : null);
 		Item flintAndSteel = Items.flint_and_steel;
+		Item flintAndStone = ModItems.flint_and_stone;
 		if (!world.isRemote) {
-			if (!entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() != null
-					&& getHeldItem.getItem() == flintAndSteel) {
+			if (!entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() != null && getHeldItem.getItem() == flintAndSteel) {
 				if (!world.isRaining() && !world.isThundering()) {
 					tileentityCampfire.setBurning(true);
-					if (getHeldItem.getItem() == Items.flint_and_steel && getHeldItem != null && !this.isActive) {
+					if (!this.isActive) {
 						getHeldItem.setItemDamage(getHeldItem.getItemDamage() + 1);
-						world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite",
-								1.0F, random.nextFloat() * 0.4F + 0.8F);
+						world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 1.0F, random.nextFloat() * 0.4F + 0.8F);
+						if (getHeldItem.getItemDamage() == getHeldItem.getMaxDamage()) {
+							--getHeldItem.stackSize;
+						}
+					}
+				}
+			}
+			if (!entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() != null && getHeldItem.getItem() == flintAndStone) {
+				if (!world.isRaining() && !world.isThundering()) {
+					tileentityCampfire.setBurning(true);
+					if (!this.isActive) {
+						getHeldItem.setItemDamage(getHeldItem.getItemDamage() + 1);
+						world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 1.0F, random.nextFloat() * 0.4F + 0.8F);
+						if (getHeldItem.getItemDamage() == getHeldItem.getMaxDamage()) {
+							--getHeldItem.stackSize;
+						}
 					}
 				}
 			}
@@ -183,13 +196,10 @@ public class BlockCampFire extends BlockContainer {
 							}
 
 							itemstack.stackSize -= j1;
-							EntityItem entityitem = new EntityItem(world, (double) ((float) x + f),
-									(double) ((float) y + f1), (double) ((float) z + f2),
-									new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+							EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
 							if (itemstack.hasTagCompound()) {
-								entityitem.getEntityItem()
-										.setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
+								entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
 							}
 
 							float f3 = 0.05F;
@@ -221,8 +231,7 @@ public class BlockCampFire extends BlockContainer {
 		return new ItemStack(ModBlocks.campFireIdle, 1, 0);
 	}
 
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase,
-			ItemStack itemStack) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase, ItemStack itemStack) {
 		int l = MathHelper.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
 		if (l == 0) {

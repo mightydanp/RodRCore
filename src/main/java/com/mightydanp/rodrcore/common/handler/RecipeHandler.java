@@ -54,8 +54,8 @@ public class RecipeHandler extends CRecipeHandler{
         }
     	
     	registerCampfireRecipe(Items.potato, 0, Items.baked_potato, 0, 1, 0.35F, ItemReference.POT_NAME);
-    	registerCampfireRecipe(ModItems.unfiredClayPan, 0, ModItems.clayPan, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
-    	registerCampfireRecipe(ModItems.unfiredClayPot, 0, ModItems.clayPot, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
+    	registerCampfireRecipe(ModItems.unfired_clay_pan, 0, ModItems.clay_pan, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
+    	registerCampfireRecipe(ModItems.unfired_clay_pot, 0, ModItems.clay_pot, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
     	registerCampfireRecipe(Blocks.sand, 0, Blocks.glass, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
     	registerCampfireRecipe(Blocks.sand, 1, Blocks.glass, 0, 1, 0.0F, ItemReference.SMALLCRUCIBLE_NAME);
     }

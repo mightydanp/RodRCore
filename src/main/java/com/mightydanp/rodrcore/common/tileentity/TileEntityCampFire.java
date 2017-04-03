@@ -14,6 +14,9 @@ import com.mightydanp.rodrcore.common.lib.GuiReference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -128,9 +131,7 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityPlayer) {
-		return this.worldObj.getTileEntity(xCoord, yCoord, zCoord) != this ? false
-				: entityPlayer.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D,
-						(double) this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(xCoord, yCoord, zCoord) != this ? false : entityPlayer.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -199,14 +200,14 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 		if (this.burnTime > 0) {
 			this.burnTime--;
-			ItemStack itemStackAsh = new ItemStack(ModItems.ash);
+			ItemStack ash = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1);
 
-			int i = random.nextInt((168 - 0) + 1) + 0;
-			if (i == random.nextInt((168 - 0) + 1) + 0) {
-				if (this.slots[4] == null) {
-					this.slots[4] = itemStackAsh.copy();
-				} else if (this.slots[4].isItemEqual(itemStackAsh)) {
-					this.slots[4].stackSize += itemStackAsh.stackSize;
+			int i = random.nextInt((224 - 0) + 1) + 0;
+			if (i == random.nextInt((224 - 0) + 1) + 0) {
+				if (this.slots[3] == null) {
+					this.slots[3] = ash.copy();
+				} else if (this.slots[3].isItemEqual(ash) && this.slots[3].stackSize <= getInventoryStackLimit()) {
+					this.slots[3].stackSize += ash.stackSize;
 				}
 			}
 		}
@@ -257,8 +258,7 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 			if (flag != this.burnTime > 0 || getItemBurnTime(this.slots[1]) > 0 && burning == true) {
 
 				flag1 = true;
-				BlockCampFire.updateCampFireBlockState(this.burnTime > 0, this.worldObj, this.xCoord, this.yCoord,
-						this.zCoord);
+				BlockCampFire.updateCampFireBlockState(this.burnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			}
 		}
 		if (flag1) {
@@ -273,13 +273,13 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 			ItemStack itemStack = CampfireRecipes.smelting().getSmeltingResult(this.slots[0]);
 
 			if (this.slots[3] != null) {
-				if (this.slots[3].getItem() == ModItems.smallCrucible) {
+				if (this.slots[3].getItem() == ModItems.small_crucible) {
 					itemStack = CampfireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
-				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clayPan) {
+				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clay_pan) {
 					itemStack = CampfirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
-				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clayPot) {
+				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clay_pot) {
 					itemStack = CampfirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 			}
@@ -303,13 +303,13 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 			ItemStack itemStack = CampfireRecipes.smelting().getSmeltingResult(this.slots[0]);
 
 			if (this.slots[3] != null) {
-				if (this.slots[3].getItem() == ModItems.smallCrucible) {
+				if (this.slots[3].getItem() == ModItems.small_crucible) {
 					itemStack = CampfireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
-				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clayPan) {
+				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clay_pan) {
 					itemStack = CampfirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
-				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clayPot) {
+				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clay_pot) {
 					itemStack = CampfirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 			}
@@ -325,12 +325,11 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 			if (this.slots[0].stackSize <= 0) {
 				this.slots[0] = null;
 			}
-			
-			if(this.slots[4] != null){
+
+			if (this.slots[4] != null) {
 				int damage = slots[3].getItemDamage();
 				slots[3].setItemDamage(damage + 1);
-				if (slots[3].getItemDamage() >= slots[3].getMaxDamage())
-				{
+				if (slots[3].getItemDamage() >= slots[3].getMaxDamage()) {
 					slots[3] = null;
 				}
 			}
@@ -339,8 +338,7 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 
 	public static int getItemBurnTime(ItemStack itemStack) {
 		if (itemStack != null) {
-			int fuelVaul = (GameRegistry.getFuelValue(itemStack) > 0 ? GameRegistry.getFuelValue(itemStack)
-					: TileEntityFurnace.getItemBurnTime(itemStack));
+			int fuelVaul = (GameRegistry.getFuelValue(itemStack) > 0 ? GameRegistry.getFuelValue(itemStack) : TileEntityFurnace.getItemBurnTime(itemStack));
 
 			return fuelVaul;
 		}
@@ -352,21 +350,21 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 	}
 
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-		if(slot == 3 && isRecipeItem(itemStack))
+		if (slot == 3 && isRecipeItem(itemStack))
 			return true;
 		return slot == 2 || slot == 4 ? false : (slot == 1 ? isItemFuel(itemStack) : true);
 	}
-	
+
 	public boolean isRecipeItem(ItemStack itemStack) {
-		if(itemStack.getItem() == ModItems.clayPan)
+		if (itemStack.getItem() == ModItems.clay_pan)
 			return true;
-		if(itemStack.getItem() == ModItems.clayPot)
+		if (itemStack.getItem() == ModItems.clay_pot)
 			return true;
-		if(itemStack.getItem() == ModItems.pan)
+		if (itemStack.getItem() == ModItems.pan)
 			return true;
-		if(itemStack.getItem() == ModItems.pot)
+		if (itemStack.getItem() == ModItems.pot)
 			return true;
-		if(itemStack.getItem() == ModItems.smallCrucible)
+		if (itemStack.getItem() == ModItems.small_crucible)
 			return true;
 		return false;
 	}
@@ -387,8 +385,7 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 	}
 
 	public boolean burning(World world, int x, int y, int z, boolean lastArgNeeded) {
-		return (world.isRaining() || world.isThundering()) && world.canBlockSeeTheSky(x, y, z) && lastArgNeeded
-				? burning : true;
+		return (world.isRaining() || world.isThundering()) && world.canBlockSeeTheSky(x, y, z) && lastArgNeeded ? burning : true;
 	}
 
 	@SideOnly(Side.CLIENT)
