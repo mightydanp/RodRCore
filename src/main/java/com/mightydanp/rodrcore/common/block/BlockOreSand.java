@@ -31,8 +31,10 @@ public class BlockOreSand extends BlockFalling {
 		this.setHardness(0.5F);
 		this.setBlockName(unlocalizedName);
 		this.setStepSound(soundTypeSand);
-		this.setHarvestLevel("pickaxe", 2, 1);
-		this.setHarvestLevel("shovel", 2, 1);
+		this.setHarvestLevel("pickaxe", 0, 0);
+		this.setHarvestLevel("shovel", 0, 0);
+		this.setHarvestLevel("pickaxe", 1, 1);
+		this.setHarvestLevel("shovel", 1, 1);
 	}
 
 	@SideOnly(Side.CLIENT)

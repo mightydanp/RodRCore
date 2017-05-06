@@ -86,7 +86,7 @@ public class BlockTwigs extends BlockBush implements ITileEntityProvider {
 
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
-		if(!world.isRemote && player.getCurrentEquippedItem().getItem() == Items.shears){
+		if (!world.isRemote && player.getCurrentEquippedItem().getItem() == Items.shears) {
 			EntityItem entityBlockRocks = new EntityItem(world, x, y, z, new ItemStack(ModBlocks.twigs, 1, 0));
 			world.spawnEntityInWorld(entityBlockRocks);
 		}
@@ -97,12 +97,11 @@ public class BlockTwigs extends BlockBush implements ITileEntityProvider {
 		if (!world.isRemote && !player.capabilities.isCreativeMode && player.inventory.getCurrentItem() == null) {
 			Random rand = null;
 			world.setBlockToAir(x, y, z);
-			EntityItem entityItem = new EntityItem(world, x, y, z,
-					new ItemStack(Items.stick, 1 + random.nextInt(2), 0));
+			EntityItem entityItem = new EntityItem(world, x, y, z, new ItemStack(Items.stick, 1 + random.nextInt(2), 0));
 			world.spawnEntityInWorld(entityItem);
 		}
 	}
-	
+
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase, ItemStack itemStack) {
 		int l = MathHelper.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
@@ -123,7 +122,7 @@ public class BlockTwigs extends BlockBush implements ITileEntityProvider {
 			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
 		}
 	}
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
 		return new TileEntityTwigs();

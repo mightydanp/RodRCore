@@ -13,10 +13,10 @@ public class SlotCampFireItemNeeded extends Slot {
 	}
 
 	public boolean isItemValid(ItemStack itemStack) {
-		if(itemStack.getItem() == ModItems.clayPan){
+		if(itemStack.getItem() == ModItems.fired_clay_pan){
 			return true;
 		}
-		if(itemStack.getItem() == ModItems.clayPot){
+		if(itemStack.getItem() == ModItems.fired_clay_pot){
 			return true;
 		}
 		if(itemStack.getItem() == ModItems.pan){
@@ -25,10 +25,9 @@ public class SlotCampFireItemNeeded extends Slot {
 		if(itemStack.getItem() == ModItems.pot){
 			return true;
 		}
-		if(itemStack.getItem() == ModItems.smallCrucible){
+		if(itemStack.getItem() == ModItems.small_crucible){
 			return true;
 		}
 		return false;
 	}
-
 }

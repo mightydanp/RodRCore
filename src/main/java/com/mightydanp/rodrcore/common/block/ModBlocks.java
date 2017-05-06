@@ -8,9 +8,14 @@ import com.mightydanp.rodrcore.common.lib.BlockReference;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import mantle.blocks.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import thaumcraft.common.CommonProxy;
+import thaumcraft.common.config.Config;
+import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.config.MaterialAiry;
 
 public class ModBlocks extends CRegistryHandler{
 	
@@ -23,6 +28,7 @@ public class ModBlocks extends CRegistryHandler{
 	public static Block							oreSand;
 	public static Block							rocks;
 	public static Block							twigs;
+	public static Block                         form_furnace;
 
 	public static void preInit() {
 		registerObject(campFireIdle = new BlockCampFire(BlockReference.CAMPFIREIDLE_NAME, false), BlockReference.CAMPFIREIDLE_NAME, null);
@@ -32,6 +38,9 @@ public class ModBlocks extends CRegistryHandler{
 		registerObject(oreSand = new BlockOreSand(BlockReference.ORESAND_NAME), BlockReference.ORESAND_NAME,ItemOreSand.class);
 		registerObject(rocks = new BlockRocks(BlockReference.ROCKS_NAME), BlockReference.ROCKS_NAME, null);
 		registerObject(twigs = new BlockTwigs(BlockReference.TWIGS_NAME), BlockReference.TWIGS_NAME, null);
+		registerObject(form_furnace = new BlockFormFurnace(BlockReference.FORM_FURNACE_NAME), BlockReference.FORM_FURNACE_NAME, null);
+		Blocks.furnace.setHardness(50f);
+		Block b = ConfigBlocks.blockAiry;
 		}
 	
 	public static void init() {

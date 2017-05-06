@@ -100,9 +100,12 @@ public class BlockRocks extends BlockBush implements ITileEntityProvider {
 		if (!world.isRemote && !player.capabilities.isCreativeMode && player.inventory.getCurrentItem() == null) {
 			Random rand = null;
 			world.setBlockToAir(x, y, z);
-			EntityItem entityItem = new EntityItem(world, x, y, z,
-					new ItemStack(ModItems.rock, 1 + random.nextInt(2), 0));
+			EntityItem entityItem = new EntityItem(world, x, y, z, new ItemStack(ModItems.rock, 1 + random.nextInt(2), 0));
+			EntityItem entityItemFlint = new EntityItem(world, x, y, z, new ItemStack(Items.flint, 1 + random.nextInt(2), 0));
 			world.spawnEntityInWorld(entityItem);
+			if (Math.random() * 100 < 20) {
+				world.spawnEntityInWorld(entityItemFlint);
+			}
 		}
 	}
 	

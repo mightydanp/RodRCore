@@ -202,12 +202,12 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 			this.burnTime--;
 			ItemStack ash = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1);
 
-			int i = random.nextInt((224 - 0) + 1) + 0;
-			if (i == random.nextInt((224 - 0) + 1) + 0) {
-				if (this.slots[3] == null) {
-					this.slots[3] = ash.copy();
-				} else if (this.slots[3].isItemEqual(ash) && this.slots[3].stackSize <= getInventoryStackLimit()) {
-					this.slots[3].stackSize += ash.stackSize;
+			int i = random.nextInt((900 - 0) + 1) + 0;
+			if (i == random.nextInt((900 - 0) + 1) + 0) {
+				if (this.slots[4] == null) {
+					this.slots[4] = ash.copy();
+				} else if (this.slots[4].isItemEqual(ash) && this.slots[4].stackSize <= getInventoryStackLimit()) {
+					this.slots[4].stackSize += ash.stackSize;
 				}
 			}
 		}
@@ -276,10 +276,10 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 				if (this.slots[3].getItem() == ModItems.small_crucible) {
 					itemStack = CampfireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
-				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clay_pan) {
+				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.fired_clay_pan) {
 					itemStack = CampfirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
-				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clay_pot) {
+				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.fired_clay_pot) {
 					itemStack = CampfirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 			}
@@ -306,10 +306,10 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 				if (this.slots[3].getItem() == ModItems.small_crucible) {
 					itemStack = CampfireSmallCrucibleRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
-				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.clay_pan) {
+				if (this.slots[3].getItem() == ModItems.pan || this.slots[3].getItem() == ModItems.fired_clay_pan) {
 					itemStack = CampfirePanRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
-				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.clay_pot) {
+				if (this.slots[3].getItem() == ModItems.pot || this.slots[3].getItem() == ModItems.fired_clay_pot) {
 					itemStack = CampfirePotRecipes.smelting().getSmeltingResult(this.slots[0]);
 				}
 			}
@@ -356,9 +356,9 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 	}
 
 	public boolean isRecipeItem(ItemStack itemStack) {
-		if (itemStack.getItem() == ModItems.clay_pan)
+		if (itemStack.getItem() == ModItems.fired_clay_pan)
 			return true;
-		if (itemStack.getItem() == ModItems.clay_pot)
+		if (itemStack.getItem() == ModItems.fired_clay_pot)
 			return true;
 		if (itemStack.getItem() == ModItems.pan)
 			return true;

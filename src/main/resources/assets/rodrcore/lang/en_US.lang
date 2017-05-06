@@ -4,18 +4,21 @@ tile.ore_sand_tin.name=Tin Ore
 tile.ore_sand_copper.name=Copper Ore
 tile.camp_fire_idle.name=Camp Fire
 tile.furnace_idle.name=Furnace
+tile.form_furnace.name=Furnace Form
 
 item.ash.name=Ashes
 item.pan.name=Pan
-item.clay_pan.name=Clay Pan
+item.fired_clay_pan.name=Fired Clay Pan
 item.unfired_clay_pan.name=Unfired Clay Pan
 item.pan.name=Pan
-item.clay_pot.name=Clay Pot
+item.fired_clay_pot.name=Fired Clay Pot
 item.unfired_clay_pot.name=Unfired Clay Pot
 item.pot.name=Pot
 item.small_crucible.name=Small Crucible
 item.rock.name=Rock
 item.flint_and_stone.name=Flint and Stone
+item.bark_strip.name=Bark Strip
+item.rope.name=Rope
 
 material.stainlesssteel=Stainless Steel
 material.titanium=Titanium

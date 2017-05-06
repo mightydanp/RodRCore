@@ -24,25 +24,29 @@ import net.minecraftforge.common.util.EnumHelper;
 public class ModItems extends CRegistryHandler {
 
 	public static Item                  unfired_clay_pan;
-	public static Item                  clay_pan;
+	public static Item                  fired_clay_pan;
 	public static Item                  pan;
 	public static Item                  unfired_clay_pot;
-	public static Item                  clay_pot;
+	public static Item                  fired_clay_pot;
 	public static Item                  pot;
 	public static Item                  small_crucible;
 	public static Item					rock;
 	public static Item                  flint_and_stone;
+	public static Item                  bark_strip;
+	public static Item                  rope;
 
 	public static void preInit() {
 		registerObject(unfired_clay_pan = new CItem(ItemReference.UNFIREDCLAYPAN_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.UNFIREDCLAYPAN_NAME, null);
-		registerObject(clay_pan = new CItem(ItemReference.CLAYPAN_NAME).setCreativeTab(RodRCore.tabRodRCore).setMaxDamage(16).setMaxStackSize(1), ItemReference.CLAYPAN_NAME, null);
+		registerObject(fired_clay_pan = new CItem(ItemReference.FIREDCLAYPAN_NAME).setCreativeTab(RodRCore.tabRodRCore).setMaxDamage(16).setMaxStackSize(1), ItemReference.FIREDCLAYPAN_NAME, null);
 		registerObject(pan = new CItem(ItemReference.PAN_NAME).setCreativeTab(RodRCore.tabRodRCore).setMaxDamage(64).setMaxStackSize(1), ItemReference.PAN_NAME, null);
 		registerObject(unfired_clay_pot = new CItem(ItemReference.UNFIREDCLAYPOT_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.UNFIREDCLAYPOT_NAME, null);
-		registerObject(clay_pot = new CItem(ItemReference.CLAYPOT_NAME).setCreativeTab(RodRCore.tabRodRCore).setMaxDamage(16).setMaxStackSize(1), ItemReference.CLAYPOT_NAME, null);
+		registerObject(fired_clay_pot = new CItem(ItemReference.FIREDCLAYPOT_NAME).setCreativeTab(RodRCore.tabRodRCore).setMaxDamage(16).setMaxStackSize(1), ItemReference.FIREDCLAYPOT_NAME, null);
 		registerObject(pot = new CItem(ItemReference.POT_NAME).setCreativeTab(RodRCore.tabRodRCore).setMaxDamage(64).setMaxStackSize(1), ItemReference.POT_NAME, null);
 		registerObject(small_crucible = new CItem(ItemReference.SMALLCRUCIBLE_NAME).setCreativeTab(RodRCore.tabRodRCore).setMaxDamage(64).setMaxStackSize(1), ItemReference.SMALLCRUCIBLE_NAME, null);
 		registerObject(rock = new CItem(ItemReference.ROCK_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.ROCK_NAME, null);
 		registerObject(flint_and_stone = new CItem(ItemReference.FLINTANDSTONE_NAME).setMaxDamage(1).setMaxStackSize(1).setCreativeTab(RodRCore.tabRodRCore), ItemReference.FLINTANDSTONE_NAME, null);
+		registerObject(bark_strip = new CItem(ItemReference.BARKSTRIP_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.BARKSTRIP_NAME, null);
+		registerObject(rope = new CItem(ItemReference.ROPE_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.ROPE_NAME, null);
 	}
 
 	public static void init() {

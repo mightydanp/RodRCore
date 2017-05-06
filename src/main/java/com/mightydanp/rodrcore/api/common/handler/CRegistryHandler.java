@@ -18,38 +18,36 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class CRegistryHandler {
-	
-	public static void registerOreDictionary(Object object, String oreDictionaryName, int meta){
-		if(object instanceof Item){
-			OreDictionary.registerOre(oreDictionaryName, (Item)object);
-				OreDictionary.registerOre(oreDictionaryName, new ItemStack((Item)object, 1, meta));
+
+	public static void registerOreDictionary(Object object, String oreDictionaryName, int meta) {
+		if (object instanceof Item) {
+			OreDictionary.registerOre(oreDictionaryName, new ItemStack((Item) object, 1, meta));
 		}
-		if(object instanceof Block){
-			OreDictionary.registerOre(oreDictionaryName, (Block)object);
-				OreDictionary.registerOre(oreDictionaryName, new ItemStack((Block)object, 1, meta));
+		if (object instanceof Block) {
+			OreDictionary.registerOre(oreDictionaryName, new ItemStack((Block) object, 1, meta));
 		}
 	}
 
 	public static void registerObject(Object object, String unlocalizedName, @Nullable Class itemBlock) {
-		if(object instanceof Item){
-			GameRegistry.registerItem((Item)object, ((Item)object).getUnlocalizedName());
+		if (object instanceof Item) {
+			GameRegistry.registerItem((Item) object, ((Item) object).getUnlocalizedName().substring(5));
 		}
-		
-		if(object instanceof Block){
-			if(itemBlock != null){
-				GameRegistry.registerBlock((Block)object, itemBlock, ((Block)object).getUnlocalizedName());
-			}else{
-				GameRegistry.registerBlock((Block)object, ((Block)object).getUnlocalizedName());
+
+		if (object instanceof Block) {
+			if (itemBlock != null) {
+				GameRegistry.registerBlock((Block) object, itemBlock, ((Block) object).getUnlocalizedName().substring(5));
+			} else {
+				GameRegistry.registerBlock((Block) object, ((Block) object).getUnlocalizedName().substring(5));
 			}
 		}
-	}	
-	
-	public static void registerGuiHandler(Object instance, IGuiHandler guiHandler){
+	}
+
+	public static void registerGuiHandler(Object instance, IGuiHandler guiHandler) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, guiHandler);
 	}
-	
-	public static void registerStringLocalization(String key, String value){
+
+	public static void registerStringLocalization(String key, String value) {
 		LanguageRegistry.instance().addStringLocalization(key, value);
 	}
-	
+
 }
