@@ -3,6 +3,7 @@ package com.mightydanp.rodrcore.common.handler;
 import cpw.mods.fml.common.eventhandler.Event;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -23,8 +24,11 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tools.GT_Tool_Knife;
 import ic2.core.Ic2Items;
 import ic2.core.block.machine.BlockMachine;
+import infiniteinvo.core.InfiniteInvo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,31 +53,6 @@ import thaumcraft.common.config.ConfigItems;
 public class EventHandler {
 
 	private Random random = new Random();
-
-	@SubscribeEvent
-	public void onBlockPlaced(BlockEvent.PlaceEvent event) {
-		if (!event.world.isRemote && event.block == Blocks.furnace) {
-			event.setCanceled(true);
-			int l = MathHelper.floor_double((double) (event.player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-			if (l == 0) {
-				event.world.setBlock(event.x, event.y, event.z, ModBlocks.furnaceIdle, 5, 2);
-			}
-
-			if (l == 1) {
-				event.world.setBlock(event.x, event.y, event.z, ModBlocks.furnaceIdle, 2, 2);
-			}
-
-			if (l == 2) {
-				event.world.setBlock(event.x, event.y, event.z, ModBlocks.furnaceIdle, 3, 2);
-			}
-
-			if (l == 3) {
-				event.world.setBlock(event.x, event.y, event.z, ModBlocks.furnaceIdle, 4, 2);
-			}
-			event.setCanceled(false);
-		}
-	}
 
 	@SubscribeEvent
 	public void fillBucket(FillBucketEvent event) {
@@ -140,7 +119,29 @@ public class EventHandler {
 	}
 
 	@SubscribeEvent
-	public void cannotPlaceBlock(BlockEvent.PlaceEvent event) {
+	public void onBlockPlaced(BlockEvent.PlaceEvent event) {
+		if (!event.world.isRemote && event.block == Blocks.furnace) {
+			event.setCanceled(true);
+			int l = MathHelper.floor_double((double) (event.player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+			if (l == 0) {
+				event.world.setBlock(event.x, event.y, event.z, ModBlocks.furnaceIdle, 5, 2);
+			}
+
+			if (l == 1) {
+				event.world.setBlock(event.x, event.y, event.z, ModBlocks.furnaceIdle, 2, 2);
+			}
+
+			if (l == 2) {
+				event.world.setBlock(event.x, event.y, event.z, ModBlocks.furnaceIdle, 3, 2);
+			}
+
+			if (l == 3) {
+				event.world.setBlock(event.x, event.y, event.z, ModBlocks.furnaceIdle, 4, 2);
+			}
+			event.setCanceled(false);
+		}
+		
 		if (event.placedBlock == ModBlocks.form_furnace || event.placedBlock instanceof BlockMachine) {
 			event.setCanceled(true);
 			event.player.addChatMessage(new ChatComponentText("No, no, no, you cant do that."));
@@ -148,76 +149,74 @@ public class EventHandler {
 	}
 
 	@SubscribeEvent
-	public void onFurnaceRightClick(PlayerInteractEvent e) {
+	public void onBlockClick(PlayerInteractEvent e) {
 		Block block = e.world.getBlock(e.x, e.y, e.z);
 
-		if (e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && (block == Blocks.furnace || block instanceof BlockMachine)) {
-			e.setCanceled(true);
-			e.world.setBlockToAir(e.x, e.y, e.z);
-			e.entityPlayer.addChatMessage(new ChatComponentText("No, no, no, you cant do that."));
-		}
-		
-		if (!e.world.isRemote && e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && block.getMaterial() == Material.wood) {
-			List<String> block_name = findAllOreNames(new ItemStack(block));
-			List<String> item_name = findAllOreNames(e.entityLiving.getHeldItem());
-			for (String blockName : block_name) {
-				for (String itemName : item_name) {
-					if (blockName.matches("logWood") && itemName.matches("craftingToolKnife")) {
-						EntityItem entityBarkStrip = new EntityItem(e.world, e.entityPlayer.posX, e.entityPlayer.posY, e.entityPlayer.posZ, new ItemStack(ModItems.bark_strip, 1, 0));
-						EntityItem entityPlank = new EntityItem(e.world, e.x, e.y, e.z, new ItemStack(Blocks.planks, 1, 0));
-						if (Math.random() * 100 < 10) {
-							e.world.spawnEntityInWorld(entityBarkStrip);
-							e.entityPlayer.getHeldItem().attemptDamageItem(+1, random);
-						}
-						if (Math.random() * 100 < 10) {
-							e.world.setBlockToAir(e.x, e.y, e.z);
-							if (Math.random() * 100 < 35) {
-								e.world.spawnEntityInWorld(entityPlank);
-							}
-						}
-						if (Math.random() * 100 < 2) {
-							--e.entityPlayer.getHeldItem().stackSize;
-						}
-					}
-
+		if (!e.world.isRemote && e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+			if (block == Blocks.furnace || block instanceof BlockMachine) {
+				e.setCanceled(true);
+				e.world.setBlockToAir(e.x, e.y, e.z);
+				e.entityPlayer.addChatMessage(new ChatComponentText("No, no, no, you cant do that."));
+			}
+			if (block.getMaterial() == Material.wood && hasOreDictName(new ItemStack(block), "logWood") && hasOreDictName(e.entityLiving.getHeldItem(), "craftingToolKnife")) {
+				EntityItem entityBarkStrip = new EntityItem(e.world, e.x, e.y, e.z, new ItemStack(ModItems.bark_strip, 1, 0));
+				int itemDamage = block.getDamageValue(e.world, e.x, e.y, e.z);
+				if(!(block instanceof BlockOldLog) || !(block instanceof BlockNewLog))
+					itemDamage = 0;
+				if(block instanceof BlockOldLog){
+					itemDamage = block.getDamageValue(e.world, e.x, e.y, e.z);
 				}
+				if(block instanceof BlockNewLog){
+					itemDamage = block.getDamageValue(e.world, e.x, e.y, e.z) + 4;
+				}
+				EntityItem entityPlank = new EntityItem(e.world, e.x, e.y, e.z, new ItemStack(Blocks.planks, 1, itemDamage));
+				if (random.nextInt(100) < 10) {
+					e.world.spawnEntityInWorld(entityBarkStrip);
+				}
+				if (random.nextInt(100) < 10) {
+					e.world.setBlockToAir(e.x, e.y, e.z);
+					if (random.nextInt(100) < 35) {
+						e.world.spawnEntityInWorld(entityPlank);
+					}
+				}
+				if (random.nextInt(100) < 2) {
+					--e.entityPlayer.getHeldItem().stackSize;
+				}
+			}
+
+			if (e.entityPlayer.isSneaking() && block == ConfigBlocks.blockAiry && ConfigBlocks.blockAiry.getDamageValue(e.world, e.x, e.y, e.z) == 1) {
+				e.world.setBlockToAir(e.x, e.y, e.z);
+				EntityItem entityNitor = new EntityItem(e.world, e.x, e.y, e.z, new ItemStack(ConfigItems.itemResource, 1, 1));
+				e.world.spawnEntityInWorld(entityNitor);
 			}
 		}
 	}
 
-	private static List<String> findAllOreNames(ItemStack input) {
-		int[] ids = OreDictionary.getOreIDs(input);
-		ArrayList<String> results = new ArrayList<String>();
-		for (int id : ids) {
-			String name = OreDictionary.getOreName(id);
-			results.add(name);
-		}
-		return results;
-	}
-
 	@SubscribeEvent
-	public void onFurnaceBreak(BlockEvent.BreakEvent e) {
+	public void onBlockBreak(BlockEvent.BreakEvent e) {
 		if (e.block == Blocks.furnace || e.block == Blocks.lit_furnace) {
 			e.setCanceled(true);
 			e.world.setBlockToAir(e.x, e.y, e.z);
 		}
-	}
-
-	@SubscribeEvent
-	public void onNitorClick(PlayerInteractEvent e) {
-		Block block = e.world.getBlock(e.x, e.y, e.z);
-		if (!e.world.isRemote && e.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && e.entityPlayer.isSneaking() && block == ConfigBlocks.blockAiry && ConfigBlocks.blockAiry.getDamageValue(e.world, e.x, e.y, e.z) == 1) {
-			e.world.setBlockToAir(e.x, e.y, e.z);
-			EntityItem entityNitor = new EntityItem(e.world, e.x, e.y, e.z, new ItemStack(ConfigItems.itemResource, 1, 1));
-			e.world.spawnEntityInWorld(entityNitor);
+		if (hasOreDictName(new ItemStack(e.block), "stoneSmooth")) {
+			EntityItem entityUnlockSlot = new EntityItem(e.world, e.x, e.y, e.z, new ItemStack(InfiniteInvo.unlock, 1, 0));
+			if (random.nextInt(100) < 1) {
+				e.world.spawnEntityInWorld(entityUnlockSlot);
+			}
 		}
+
 	}
 
 	@SubscribeEvent
 	public void onCraftRock(PlayerEvent.ItemCraftedEvent e) {
-		if (e.crafting.getItem().equals(ModItems.rock) && Math.random() * 100 < 15) {
+		if (e.crafting.getItem().equals(ModItems.rock) && random.nextInt(100) < 15) {
 			ItemStack stoneDust = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
 			e.player.inventory.addItemStackToInventory(stoneDust);
 		}
+	}
+
+	private static boolean hasOreDictName(ItemStack stack, String name) {
+		int id = OreDictionary.getOreID(name);
+		return Arrays.stream(OreDictionary.getOreIDs(stack)).anyMatch(i -> i == id);
 	}
 }

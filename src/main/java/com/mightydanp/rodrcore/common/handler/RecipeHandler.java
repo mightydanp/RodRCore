@@ -38,8 +38,13 @@ public class RecipeHandler extends CRecipeHandler {
 
 	private static void craftingRecipes() {
 		registerShapedRecipe(ModItems.rope, 0, 1, new Object[] { "##", "##", '#', ModItems.bark_strip });
-		for (ItemStack s : OreDictionary.getOres("craftingToolMortar"))
-			registerShapedRecipe(ModItems.rock, 0, 1, new Object[] { "A", "B", 'A', Blocks.cobblestone, 'B', (s) });
+		for (ItemStack s : OreDictionary.getOres("craftingToolMortar")){
+			for (ItemStack c : OreDictionary.getOres("stoneCobble")){
+				registerShapedRecipe(ModItems.rock, 0, 1, new Object[] { "A", "B", 'A', (c), 'B', (s) });
+			}
+		}
+			
+			
 		registerShapedRecipe(Blocks.cobblestone, 0, 1, new Object[] { "##", "##", '#', ModItems.rock });
 	}
 

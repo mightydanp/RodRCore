@@ -215,8 +215,7 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 			--this.furnaceBurnTime;
 			ItemStack ash = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1);
 			
-			int i = random.nextInt((900 - 0) + 1) + 0;
-			if (i == random.nextInt((900 - 0) + 1) + 0) {
+			if (random.nextInt(100) < 5) {
 				if (this.slots[3] == null) {
 					this.slots[3] = ash.copy();
 				} else if (this.slots[3].isItemEqual(ash)

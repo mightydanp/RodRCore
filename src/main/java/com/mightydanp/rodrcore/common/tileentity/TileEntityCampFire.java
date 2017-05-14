@@ -202,8 +202,7 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 			this.burnTime--;
 			ItemStack ash = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1);
 
-			int i = random.nextInt((900 - 0) + 1) + 0;
-			if (i == random.nextInt((900 - 0) + 1) + 0) {
+			if (random.nextInt(100) < 5) {
 				if (this.slots[4] == null) {
 					this.slots[4] = ash.copy();
 				} else if (this.slots[4].isItemEqual(ash) && this.slots[4].stackSize <= getInventoryStackLimit()) {
@@ -231,9 +230,6 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 					}
 				} else if (!burning(worldObj, xCoord, yCoord, zCoord, true)) {
 					this.currentItemBurnTime = this.burnTime = 0;
-				}
-				if (this.slots[1] == null) {
-					this.burning = false;
 				}
 
 				if (this.isBurning() && this.canSmelt() || this.slots[1] != null && burning == true) {

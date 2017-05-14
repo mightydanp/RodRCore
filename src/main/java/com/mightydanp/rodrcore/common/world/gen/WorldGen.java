@@ -30,8 +30,8 @@ public class WorldGen extends CWorldGen {
 		this.spawnTwigsAndRocks(ModBlocks.rocks, world, random, chunkX, chunkZ, 3);
 
 		if (biome != biome.desert && biome != biome.desertHills) {
-			this.spawnOres(ModBlocks.oreSand, 0, Blocks.sand, world, random, chunkX, chunkZ, 6, 128, 0, 250);
-			this.spawnOres(ModBlocks.oreSand, 1, Blocks.sand, world, random, chunkX, chunkZ, 6, 120, 0, 250);
+			this.spawnOres(ModBlocks.oreSand, 0, Blocks.sand, world, random, chunkX, chunkZ, 4, 80, 0, 250);
+			this.spawnOres(ModBlocks.oreSand, 1, Blocks.sand, world, random, chunkX, chunkZ, 4, 75, 0, 250);
 		}
 	}
 

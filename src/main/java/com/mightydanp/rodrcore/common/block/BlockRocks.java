@@ -16,6 +16,9 @@ import com.mightydanp.rodrcore.common.tileentity.TileEntityRocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.ITileEntityProvider;
@@ -100,11 +103,16 @@ public class BlockRocks extends BlockBush implements ITileEntityProvider {
 		if (!world.isRemote && !player.capabilities.isCreativeMode && player.inventory.getCurrentItem() == null) {
 			Random rand = null;
 			world.setBlockToAir(x, y, z);
+			ItemStack stoneDust = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
 			EntityItem entityItem = new EntityItem(world, x, y, z, new ItemStack(ModItems.rock, 1 + random.nextInt(2), 0));
 			EntityItem entityItemFlint = new EntityItem(world, x, y, z, new ItemStack(Items.flint, 1 + random.nextInt(2), 0));
+			EntityItem entityStoneDust = new EntityItem(world, x, y, z, stoneDust);
 			world.spawnEntityInWorld(entityItem);
-			if (Math.random() * 100 < 20) {
+			if (random.nextInt(100) < 20) {
 				world.spawnEntityInWorld(entityItemFlint);
+			}
+			if (random.nextInt(100) < 15) {
+				world.spawnEntityInWorld(entityStoneDust);
 			}
 		}
 	}
