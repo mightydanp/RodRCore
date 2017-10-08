@@ -2,6 +2,7 @@ package com.mightydanp.rodrcore.common.item;
 
 import com.mightydanp.rodrcore.api.common.handler.CRegistryHandler;
 import com.mightydanp.rodrcore.api.common.item.CItem;
+import com.mightydanp.rodrcore.api.common.item.CItemAxe;
 import com.mightydanp.rodrcore.common.RodRCore;
 import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
 import com.mightydanp.rodrcore.common.item.crafting.CampfirePotRecipes;
@@ -10,6 +11,7 @@ import com.mightydanp.rodrcore.common.item.crafting.CampfirePanRecipes;
 import com.mightydanp.rodrcore.common.lib.BlockReference;
 import com.mightydanp.rodrcore.common.lib.ItemReference;
 
+import magicbees.main.Config;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -34,6 +36,9 @@ public class ModItems extends CRegistryHandler {
 	public static Item                  flint_and_stone;
 	public static Item                  bark_strip;
 	public static Item                  rope;
+	public static Item                  salvaged_axe;
+	
+	public static Item.ToolMaterial salvagedToolMaterial = EnumHelper.addToolMaterial("salvaged", 1, 10, 0.7F, 0.0F, 0);
 
 	public static void preInit() {
 		registerObject(unfired_clay_pan = new CItem(ItemReference.UNFIREDCLAYPAN_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.UNFIREDCLAYPAN_NAME, null);
@@ -47,6 +52,7 @@ public class ModItems extends CRegistryHandler {
 		registerObject(flint_and_stone = new CItem(ItemReference.FLINTANDSTONE_NAME).setMaxDamage(1).setMaxStackSize(1).setCreativeTab(RodRCore.tabRodRCore), ItemReference.FLINTANDSTONE_NAME, null);
 		registerObject(bark_strip = new CItem(ItemReference.BARKSTRIP_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.BARKSTRIP_NAME, null);
 		registerObject(rope = new CItem(ItemReference.ROPE_NAME).setCreativeTab(RodRCore.tabRodRCore), ItemReference.ROPE_NAME, null);
+		registerObject(salvaged_axe = new CItemAxe(salvagedToolMaterial, ItemReference.SALVAGEDAXE_NAME, 0).setCreativeTab(RodRCore.tabRodRCore), ItemReference.SALVAGEDAXE_NAME, null);
 	}
 
 	public static void init() {
@@ -55,6 +61,8 @@ public class ModItems extends CRegistryHandler {
 
 	public static void registerOreDictionary() {
 		registerOreDictionary(rock, ItemReference.ROCK_NAME, 0);
+		registerOreDictionary(Config.manasteelScoop, ItemReference.SCOOP_NAME, 0);
+		registerOreDictionary(Config.thaumiumScoop, ItemReference.SCOOP_NAME, 0);
 	}
 	
 	public static void registerBlockMiningLevel() {}

@@ -1,11 +1,4 @@
 To-Do
 --------------------------------------------------------------------------
-Carpenters torches reqire glowstone, coal or charcoal, and carpenters block.
---------------------------------------------------------------------------
-add wooden hopper
---------------------------------------------------------------------------
-Change storage draws material to grass or something.
---------------------------------------------------------------------------
 8 coal or charcoal to get heated iron in a furnace in magic blastfunace faster.
-
 

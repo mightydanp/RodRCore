@@ -202,13 +202,16 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 			this.burnTime--;
 			ItemStack ash = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1);
 
-			if (random.nextInt(100) < 5) {
+			if (random.nextInt(100) < 0.008) {
 				if (this.slots[4] == null) {
 					this.slots[4] = ash.copy();
 				} else if (this.slots[4].isItemEqual(ash) && this.slots[4].stackSize <= getInventoryStackLimit()) {
 					this.slots[4].stackSize += ash.stackSize;
 				}
 			}
+		}
+		if (this.burnTime == 0 && this.slots[1] == null) {
+			this.burning = false;
 		}
 
 		if (!this.worldObj.isRemote) {
@@ -230,6 +233,14 @@ public class TileEntityCampFire extends TileEntity implements ISidedInventory {
 					}
 				} else if (!burning(worldObj, xCoord, yCoord, zCoord, true)) {
 					this.currentItemBurnTime = this.burnTime = 0;
+				}
+
+				if (this.slots[1] == null) {
+					for (int i = 0; i < 40; i++) {
+						if (i == 40) {
+							this.burning = false;
+						}
+					}
 				}
 
 				if (this.isBurning() && this.canSmelt() || this.slots[1] != null && burning == true) {

@@ -15,5 +15,7 @@ public class ItemReference {
 	public static final String FLINTANDSTONE_NAME = "flint_and_stone";
 	public static final String BARKSTRIP_NAME = "bark_strip";
 	public static final String ROPE_NAME = "rope";
+	public static final String SALVAGEDAXE_NAME = "salvaged_axe";
+	public static final String SCOOP_NAME = "scoop";
 
 }

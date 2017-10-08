@@ -19,6 +19,7 @@ item.rock.name=Rock
 item.flint_and_stone.name=Flint and Stone
 item.bark_strip.name=Bark Strip
 item.rope.name=Rope
+item.salvaged_axe.name=Salvaged Axe
 
 material.stainlesssteel=Stainless Steel
 material.titanium=Titanium

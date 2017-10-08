@@ -12,6 +12,7 @@ import com.mightydanp.rodrcore.api.common.lib.TinkersFluidRegistry;
 import com.mightydanp.rodrcore.common.block.ModBlocks;
 import com.mightydanp.rodrcore.common.handler.EventHandler;
 import com.mightydanp.rodrcore.common.handler.GuiHandler;
+import com.mightydanp.rodrcore.common.handler.OreGenEventHandler;
 import com.mightydanp.rodrcore.common.handler.RecipeHandler;
 import com.mightydanp.rodrcore.common.item.ModItems;
 import com.mightydanp.rodrcore.common.lib.*;
@@ -72,7 +73,9 @@ public class RodRCore {
 		GameRegistry.registerTileEntity(TileEntityTwigs.class, EntityReference.TWIGS_NAME);
 		GameRegistry.registerTileEntity(TileEntityRocks.class, EntityReference.ROCKS_NAME);
 		EventHandler handler = new EventHandler();
+		OreGenEventHandler oreGenEventHandler = new OreGenEventHandler();
 		MinecraftForge.EVENT_BUS.register(handler);
+		MinecraftForge.ORE_GEN_BUS.register(oreGenEventHandler);
 		FMLCommonHandler.instance().bus().register(handler);
 		if(Loader.isModLoaded("MineTweaker3"))
 		{

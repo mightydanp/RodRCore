@@ -186,12 +186,12 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 		}
 		this.markDirty();
 	}
-	
-	public ItemStack getInputSlot(){
+
+	public ItemStack getInputSlot() {
 		return slots[0];
 	}
-	
-	public ItemStack getOutputSlot(){
+
+	public ItemStack getOutputSlot() {
 		return slots[2];
 	}
 
@@ -205,7 +205,7 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 
 	public void updateEntity() {
 		final long tick = getWorldObj().getWorldTime();
-		
+
 		temperature = getTemperature();
 
 		boolean flag = this.furnaceBurnTime > 0;
@@ -214,23 +214,20 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 		if (this.furnaceBurnTime > 0) {
 			--this.furnaceBurnTime;
 			ItemStack ash = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1);
-			
-			if (random.nextInt(100) < 5) {
+
+			if (random.nextInt(100) < 0.008) {
 				if (this.slots[3] == null) {
 					this.slots[3] = ash.copy();
-				} else if (this.slots[3].isItemEqual(ash)
-						&& this.slots[3].stackSize <= getInventoryStackLimit()) {
+				} else if (this.slots[3].isItemEqual(ash) && this.slots[3].stackSize <= getInventoryStackLimit()) {
 					this.slots[3].stackSize += ash.stackSize;
 				}
 			}
-		} else {
-			if(this.slots[1] == null){
+		}
+			if (this.furnaceBurnTime == 0 && this.slots[1] == null) {
 				this.isLit = false;
 			}
-		}
 
-		if (!this.worldObj.isRemote && flag != this.furnaceBurnTime > 0
-				|| getItemBurnTime(this.slots[1]) > 0 && isLit) {
+		if (!this.worldObj.isRemote && flag != this.furnaceBurnTime > 0 || getItemBurnTime(this.slots[1]) > 0 && isLit) {
 
 			if (this.furnaceBurnTime == 0 && burning(worldObj, xCoord, yCoord, zCoord, false)) {
 				this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.slots[1]);
@@ -256,10 +253,10 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 					}
 				}
 			}
-			
+
 			System.out.println(this.temperature);
 
-			if (this.isBurning() && this.canSmelt() && isLit && this.temperature >= 200) {
+			if (this.isBurning() && this.canSmelt() && isLit && this.temperature >= 140) {
 				++this.furnaceCookTime;
 
 				if (this.furnaceCookTime == furnaceSpeed) {
@@ -271,8 +268,7 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 				this.furnaceCookTime = 0;
 			}
 			flag1 = true;
-			BlockNewFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord,
-					this.zCoord);
+			BlockNewFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 		}
 
 		if (flag1) {
@@ -281,11 +277,11 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 	}
 
 	public boolean canSmelt() {
-		if (this.slots[0] == null || this.temperature < 200) {
+		if (this.slots[0] == null || this.temperature < 140) {
 			return false;
 		} else {
 			ItemStack itemStack = FurnaceRecipes.smelting().getSmeltingResult(this.slots[0]);
-			
+
 			if (itemStack == null) {
 				this.furnaceCookTime = 0;
 				return false;
@@ -318,14 +314,12 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 	}
 
 	public boolean burning(World world, int x, int y, int z, boolean lastArgNeeded) {
-		return (world.isRaining() || world.isThundering()) && world.canBlockSeeTheSky(x, y, z) && lastArgNeeded ? isLit
-				: true;
+		return (world.isRaining() || world.isThundering()) && world.canBlockSeeTheSky(x, y, z) && lastArgNeeded ? isLit : true;
 	}
 
 	public static int getItemBurnTime(ItemStack itemStack) {
 		if (itemStack != null) {
-			int fuelVaul = (GameRegistry.getFuelValue(itemStack) > 0 ? GameRegistry.getFuelValue(itemStack)
-					: TileEntityFurnace.getItemBurnTime(itemStack));
+			int fuelVaul = (GameRegistry.getFuelValue(itemStack) > 0 ? GameRegistry.getFuelValue(itemStack) : TileEntityFurnace.getItemBurnTime(itemStack));
 
 			return fuelVaul;
 		}
@@ -337,9 +331,7 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 	}
 
 	public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false
-				: p_70300_1_.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D,
-						(double) this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : p_70300_1_.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	public void openInventory() {
@@ -349,9 +341,8 @@ public class TileEntityNewFurnace extends TileEntity implements ISidedInventory 
 	}
 
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-		return slot == 2 || slot == 3? false : (slot == 1 ? isItemFuel(itemStack) : true);
+		return slot == 2 || slot == 3 ? false : (slot == 1 ? isItemFuel(itemStack) : true);
 	}
-	
 
 	public int[] getAccessibleSlotsFromSide(int slot) {
 		return slot == 0 ? slotsBottom : (slot == 1 ? slotsTop : slotsSides);
